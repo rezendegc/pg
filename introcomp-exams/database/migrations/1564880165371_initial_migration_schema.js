@@ -7,16 +7,16 @@ class InitialMigrationSchema extends Schema {
   async up() {
     await this.create("exam_schedules", table => {
       table.increments();
-      table.datetime("start_datetime");
-      table.datetime("end_datetime");
-      table.time("register_time");
+      table.datetime("start_datetime").notNullable();
+      table.datetime("end_datetime").notNullable();
+      table.time("register_time").notNullable();
       table.timestamps();
     });
     await this.create("events", table => {
       table.increments();
-      table.datetime("start_date");
-      table.datetime("end_date");
-      table.string("name");
+      table.datetime("start_date").notNullable();
+      table.datetime("end_date").notNullable();
+      table.string("name").notNullable();
       table.timestamps();
     });
     await this.create("exams", table => {
@@ -25,6 +25,7 @@ class InitialMigrationSchema extends Schema {
       table
         .integer("exam_schedule_id")
         .unsigned()
+        .notNullable()
         .references("id")
         .inTable("exam_schedules");
       table.timestamps();
@@ -32,18 +33,23 @@ class InitialMigrationSchema extends Schema {
     await this.create("users", table => {
       table.increments();
       table.string("email", 254).notNullable();
-      table.string("password", 60);
+      table.string("password", 60).notNullable();
       table.string("school");
       table.string("name");
-      table.enu("role", ["TEACHER", "ADMIN", "STUDENT"], {
-        enumName: "UserRoles"
-      });
-      table.enu("shfit", ["MORNING", "VESPERTINE", "BOTH"], {
-        enumName: "StudentShifts"
-      });
+      table
+        .enu("role", ["TEACHER", "ADMIN", "STUDENT"], {
+          enumName: "UserRoles"
+        })
+        .defaultTo("STUDENT");
+      table
+        .enu("shfit", ["MORNING", "VESPERTINE", "BOTH"], {
+          enumName: "StudentShifts"
+        })
+        .notNullable();
       table
         .integer("event_id")
         .unsigned()
+        .notNullable()
         .references("id")
         .inTable("events");
       table
@@ -56,14 +62,14 @@ class InitialMigrationSchema extends Schema {
     await this.create("questions", table => {
       table.increments();
       table.string("summary");
-      table.integer("difficulty");
-      table.bool("is_image");
-      table.string("correct_answer");
-      table.string("answer_1");
-      table.string("answer_2");
-      table.string("answer_3");
-      table.string("answer_4");
-      table.string("answer_5");
+      table.integer("difficulty").notNullable();
+      table.bool("is_image").defaultTo(false);
+      table.string("correct_answer").notNullable();
+      table.string("answer_1").notNullable();
+      table.string("answer_2").notNullable();
+      table.string("answer_3").notNullable();
+      table.string("answer_4").notNullable();
+      table.string("answer_5").notNullable();
       table.timestamps();
     });
     await this.create("exam_question", table => {
@@ -73,12 +79,14 @@ class InitialMigrationSchema extends Schema {
         .integer("exam_id")
         .unsigned()
         .references("id")
-        .inTable("exams");
+        .inTable("exams")
+        .notNullable();
       table
         .integer("question_id")
         .unsigned()
         .references("id")
-        .inTable("questions");
+        .inTable("questions")
+        .notNullable();
       table.timestamps();
     });
   }
