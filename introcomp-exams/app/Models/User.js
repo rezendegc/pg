@@ -17,7 +17,7 @@ class User extends Model {
   }
 
   exam() {
-    return this.belongsTo("App/Models/Exam");
+    return this.hasOne("App/Models/Exam");
   }
 
   event() {

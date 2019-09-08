@@ -7,6 +7,10 @@ class ExamSchedule extends Model {
   exams() {
     return this.hasMany("App/Models/Exam");
   }
+
+  event() {
+    return this.belongsTo("App/Models/Event");
+  }
 }
 
 module.exports = ExamSchedule;

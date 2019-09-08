@@ -5,11 +5,15 @@ const Model = use("Model");
 
 class Exam extends Model {
   users() {
-    return this.hasMany("App/Models/User");
+    return this.belongsTo("App/Models/User");
   }
 
   schedule() {
     return this.belongsTo("App/Models/ExamSchedule");
+  }
+
+  event() {
+    return this.belongsTo("App/Models/Event");
   }
 
   questions() {

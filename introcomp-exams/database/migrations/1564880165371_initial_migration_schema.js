@@ -10,6 +10,12 @@ class InitialMigrationSchema extends Schema {
       table.datetime("start_datetime").notNullable();
       table.datetime("end_datetime").notNullable();
       table.time("register_time").notNullable();
+      table
+        .integer("event_id")
+        .unsigned()
+        .notNullable()
+        .references("id")
+        .inTable("events");
       table.timestamps();
     });
     await this.create("events", table => {
@@ -28,6 +34,17 @@ class InitialMigrationSchema extends Schema {
         .notNullable()
         .references("id")
         .inTable("exam_schedules");
+      table
+        .integer("event_id")
+        .unsigned()
+        .notNullable()
+        .references("id")
+        .inTable("events");
+      table
+        .integer("user_id")
+        .unsigned()
+        .references("id")
+        .inTable("users");
       table.timestamps();
     });
     await this.create("users", table => {
@@ -35,6 +52,7 @@ class InitialMigrationSchema extends Schema {
       table.string("email", 254).notNullable();
       table.string("password", 60).notNullable();
       table.string("school");
+      table.string("cpf");
       table.string("name");
       table
         .enu("role", ["TEACHER", "ADMIN", "STUDENT"], {
@@ -52,11 +70,6 @@ class InitialMigrationSchema extends Schema {
         .notNullable()
         .references("id")
         .inTable("events");
-      table
-        .integer("exam_id")
-        .unsigned()
-        .references("id")
-        .inTable("exams");
       table.timestamps();
     });
     await this.create("questions", table => {
@@ -64,6 +77,7 @@ class InitialMigrationSchema extends Schema {
       table.string("summary");
       table.integer("difficulty").notNullable();
       table.bool("is_image").defaultTo(false);
+      table.string("wording").notNullable();
       table.string("correct_answer").notNullable();
       table.string("answer_1").notNullable();
       table.string("answer_2").notNullable();
@@ -87,7 +101,6 @@ class InitialMigrationSchema extends Schema {
         .references("id")
         .inTable("questions")
         .notNullable();
-      table.timestamps();
     });
   }
 
