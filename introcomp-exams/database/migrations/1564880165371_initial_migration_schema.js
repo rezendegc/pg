@@ -60,7 +60,7 @@ class InitialMigrationSchema extends Schema {
         })
         .defaultTo("STUDENT");
       table
-        .enu("shfit", ["MORNING", "VESPERTINE", "BOTH"], {
+        .enu("shift", ["MORNING", "VESPERTINE", "BOTH"], {
           enumName: "StudentShifts"
         })
         .notNullable();
