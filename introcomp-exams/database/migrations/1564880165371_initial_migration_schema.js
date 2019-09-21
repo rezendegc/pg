@@ -5,6 +5,13 @@ const Schema = use("Schema");
 
 class InitialMigrationSchema extends Schema {
   async up() {
+    await this.create("events", table => {
+      table.increments();
+      table.datetime("start_date").notNullable();
+      table.datetime("end_date").notNullable();
+      table.string("name").notNullable();
+      table.timestamps();
+    });
     await this.create("exam_schedules", table => {
       table.increments();
       table.datetime("start_datetime").notNullable();
@@ -18,11 +25,29 @@ class InitialMigrationSchema extends Schema {
         .inTable("events");
       table.timestamps();
     });
-    await this.create("events", table => {
+    await this.create("users", table => {
       table.increments();
-      table.datetime("start_date").notNullable();
-      table.datetime("end_date").notNullable();
-      table.string("name").notNullable();
+      table.string("email", 254).notNullable();
+      table.string("password", 60);
+      table.string("school");
+      table.string("cpf");
+      table.string("name");
+      table
+        .enu("role", ["TEACHER", "ADMIN", "STUDENT"], {
+          enumName: "UserRoles"
+        })
+        .defaultTo("STUDENT");
+      table
+        .enu("shift", ["MORNING", "VESPERTINE", "BOTH"], {
+          enumName: "StudentShifts"
+        })
+        .notNullable();
+      table
+        .integer("event_id")
+        .unsigned()
+        .notNullable()
+        .references("id")
+        .inTable("events");
       table.timestamps();
     });
     await this.create("exams", table => {
@@ -45,31 +70,6 @@ class InitialMigrationSchema extends Schema {
         .unsigned()
         .references("id")
         .inTable("users");
-      table.timestamps();
-    });
-    await this.create("users", table => {
-      table.increments();
-      table.string("email", 254).notNullable();
-      table.string("password", 60).notNullable();
-      table.string("school");
-      table.string("cpf");
-      table.string("name");
-      table
-        .enu("role", ["TEACHER", "ADMIN", "STUDENT"], {
-          enumName: "UserRoles"
-        })
-        .defaultTo("STUDENT");
-      table
-        .enu("shift", ["MORNING", "VESPERTINE", "BOTH"], {
-          enumName: "StudentShifts"
-        })
-        .notNullable();
-      table
-        .integer("event_id")
-        .unsigned()
-        .notNullable()
-        .references("id")
-        .inTable("events");
       table.timestamps();
     });
     await this.create("questions", table => {
@@ -107,10 +107,10 @@ class InitialMigrationSchema extends Schema {
   async down() {
     await this.drop("exam_question");
     await this.drop("questions");
-    await this.drop("users");
     await this.drop("exams");
-    await this.drop("events");
+    await this.drop("users");
     await this.drop("exam_schedules");
+    await this.drop("events");
   }
 }
 
