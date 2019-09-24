@@ -16,4 +16,10 @@
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route')
 
-Route.on('/').render('welcome')
+Route.get('/', 'UserContro  of ller.index')
+Route.get('/admin', 'UserController.adminLogin')
+// Route.post('/login', 'UserController.login').middleware('guest')
+
+// Route
+//     .get('users/:id', 'UserController.show')
+//     .middleware('auth')
