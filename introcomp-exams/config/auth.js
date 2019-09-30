@@ -53,7 +53,7 @@ module.exports = {
     model: 'App/Models/User',
     scheme: 'basic',
     uid: 'email',
-    password: 'password'
+    // password: 'password'
   },
 
   /*

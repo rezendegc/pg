@@ -16,10 +16,8 @@
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route')
 
-Route.get('/', 'UserContro  of ller.index')
+Route.get('/', 'UserController.index').as('student.index').middleware('guest')
 Route.get('/admin', 'UserController.adminLogin')
-// Route.post('/login', 'UserController.login').middleware('guest')
-
-// Route
-//     .get('users/:id', 'UserController.show')
-//     .middleware('auth')
+Route.post('/login', 'UserController.login').middleware('guest').as('student.login')
+Route.get('/logout', 'UserController.logout').middleware('auth').as('student.logout')
+Route.get('/exam', 'ExamController.show').middleware('auth').as('exam.show')
