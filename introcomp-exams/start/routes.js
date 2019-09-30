@@ -17,7 +17,9 @@
 const Route = use('Route')
 
 Route.get('/', 'UserController.index').as('student.index').middleware('guest')
-Route.get('/admin', 'UserController.adminLogin')
+Route.get('/admin', 'UserController.adminIndex').middleware('guest').as('admin.index')
+Route.post('/admin', 'UserController.adminLogin').middleware('guest').as('admin.login')
 Route.post('/login', 'UserController.login').middleware('guest').as('student.login')
 Route.get('/logout', 'UserController.logout').middleware('auth').as('student.logout')
 Route.get('/exam', 'ExamController.show').middleware('auth').as('exam.show')
+Route.on('/admin/menu').render('admin/menu').middleware('isAdmin').as('admin.menu')

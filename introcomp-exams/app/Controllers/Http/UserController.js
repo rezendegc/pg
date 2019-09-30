@@ -32,6 +32,23 @@ class UserController {
     return response.route('exam.show')
   }
 
+  async adminLogin({ request, auth, session, response }) {
+    const { email, password } = request.all()
+    await auth.logout()
+
+
+    try {
+      await auth.attempt(email, password)
+    } catch (e) {
+      session.flashExcept(['invalidLogin'])
+      session.flash({ error: 'E-mail ou senha inválidos!' })
+
+      return response.route('admin.index')
+    }
+
+    return response.route('admin.menu')
+  }
+
   async logout({ auth, response }) {
     await auth.logout()
 

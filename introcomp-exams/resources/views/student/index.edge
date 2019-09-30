@@ -12,7 +12,7 @@
   <div class="ufes-logo"></div>
   <div class="pet-logo"></div>
   <div class="welcome">bem vindo</div>
-  <form action="/login" method="post" >
+  <form action="{{ route('student.login') }}" method="post" >
     {{ csrfField() }}
 
     <div class="login-form">
