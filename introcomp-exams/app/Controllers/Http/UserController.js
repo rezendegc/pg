@@ -10,7 +10,7 @@ class UserController {
     return view.render('student/index')
   }
 
-  adminLogin({ view }) {
+  adminIndex({ view }) {
     return view.render('admin/login')
   }
 
@@ -24,7 +24,7 @@ class UserController {
       await auth.login(user)
     } catch (e) {
       session.flashExcept(['email'])
-      session.flash({ error: 'E-mail não encontrado !' })
+      session.flash({ error: 'E-mail não encontrado!' })
 
       return response.route('student.index')
     }
