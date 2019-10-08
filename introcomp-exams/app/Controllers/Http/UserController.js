@@ -3,9 +3,7 @@
 const User = use('App/Models/User')
 const moment = require('moment')
 
-
 class UserController {
-
   index({ view }) {
     return view.render('student/index')
   }
@@ -18,11 +16,20 @@ class UserController {
     const { email } = request.all()
     await auth.logout()
 
-    const user = await User.query().innerJoin('events', 'users.event_id', 'events.id').where({ email, role: 'STUDENT' }).andWhere('events.start_date', '<', formatDate(moment())).andWhere('events.end_date', '>', formatDate(moment())).first()
+    const user = await User.query()
+      .innerJoin('events', 'events.id', 'users.event_id')
+      .select('users.id')
+      .where({ email, role: 'STUDENT' })
+      .andWhere('events.start_date', '<', formatDate(moment()))
+      .andWhere('events.end_date', '>', formatDate(moment()))
+      .first()
 
     try {
       await auth.login(user)
+
     } catch (e) {
+      console.debug(e)
+
       session.flashExcept(['email'])
       session.flash({ error: 'E-mail não encontrado!' })
 
@@ -36,10 +43,11 @@ class UserController {
     const { email, password } = request.all()
     await auth.logout()
 
-
     try {
       await auth.attempt(email, password)
     } catch (e) {
+      console.debug(e)
+
       session.flashExcept(['invalidLogin'])
       session.flash({ error: 'E-mail ou senha inválidos!' })
 
@@ -58,7 +66,9 @@ class UserController {
 
 module.exports = UserController
 
-
 const formatDate = date => {
-  return date.toISOString().replace('T', ' ').replace('Z', '')
+  return date
+    .toISOString()
+    .replace('T', ' ')
+    .replace('Z', '')
 }
