@@ -1,1 +1,91 @@
-Here we go
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Introcomp Exams</title>
+  {{ script('icons/feather.min') }}
+  {{ style('styles/student/exam') }}
+</head>
+<body>
+  <div class="header">
+    <div class="timer">
+      <i data-feather="clock" class='clock-icon'></i>
+      <span class="text">00:15</span>
+    </div>
+    
+    <div class="circle-unchecked"></div>
+    <div class="circle-unchecked"></div>
+    <div class="circle-checked"></div>
+    <div class="circle-checked"></div>
+    <div class="circle-unchecked"></div>
+    <div class="circle-unchecked"></div>
+    <div class="circle-unchecked"></div>
+    <div class="circle-unchecked"></div>
+    <div class="circle-unchecked"></div>
+    <div class="circle-unchecked"></div>
+    <div class="circle-unchecked"></div>
+    <div class="circle-unchecked"></div>
+    <div class="circle-unchecked"></div>
+    <div class="circle-unchecked"></div>
+    <div class="circle-unchecked"></div>
+  
+    @component('components.rules')
+    @endcomponent
+  </div>
+
+  
+  <div class="exam-body">
+    <p class="title">questão 1:</p>
+    <br>
+    <p class="description">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed in venenatis ante. Vestibulum a mi imperdiet, tincidunt massa a, feugiat mauris. Nulla vulputate bibendum consequat. Proin volutpat sem a varius viverra. Maecenas pellentesque urna eget metus malesuada, ultrices condimentum lectus viverra. Ut vitae ipsum sed erat efficitur condimentum imperdiet at velit. Phasellus pulvinar vitae augue eget dignissim. Nulla eget libero vehicula, euismod massa vitae, semper lacus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce non tortor ac ligula congue laoreet id sit amet justo. Integer tempus urna libero, id finibus dui facilisis ac. Ut elementum metus fringilla dui consectetur, in rhoncus arcu tristique.
+
+      Phasellus quis auctor orci. Curabitur placerat egestas dui in laoreet. Mauris sed felis ac tortor fringilla vulputate. Sed interdum lacus non consequat aliquam. Integer nec congue ligula, at tempus magna. Integer consectetur euismod dolor sit amet tempus. Vivamus faucibus tempor mattis. Sed ullamcorper pharetra condimentum. Mauris finibus erat eros, ac volutpat sapien faucibus eget. Quisque vestibulum nibh imperdiet, scelerisque purus quis, egestas dolor. Maecenas porttitor ultrices urna sed varius. Donec a leo velit. Duis mattis lacinia arcu id venenatis. Morbi felis neque, congue quis tristique non, lacinia non quam. Pellentesque aliquam iaculis nisl non sodales. Vivamus sed molestie sapien, eu congue ante.
+    
+      Morbi leo mi, nonummy eget, tristique non, rhoncus non, leo. Nullam faucibus mi quis velit. Integer in sapien. Fusce tellus odio, dapibus id?
+    </p>
+      
+    <label class="container">One
+      <input type="radio" checked="checked" name="radio">
+      <span class="checkmark"></span>
+    </label>
+    <label class="container">Two
+      <input type="radio" name="radio">
+      <span class="checkmark"></span>
+    </label>
+    <label class="container">Three
+      <input type="radio" name="radio">
+      <span class="checkmark"></span>
+    </label>
+    <label class="container">Four
+      <input type="radio" name="radio">
+      <span class="checkmark"></span>
+    </label>
+    <label class="container">Five
+      <input type="radio" name="radio">
+      <span class="checkmark"></span>
+    </label>
+
+    <div style="margin: 100px;"></div>
+
+    <!--<a href="javascript:void(0)" class="next-button-container">
+      <span style="margin-bottom: 2px;"> próxima</span>
+      <i data-feather="chevron-right" class='chevron-icon'></i>
+    </a>-->
+
+    @component('components.finish')
+      
+    @endcomponent
+
+    <a href="javascript:void(0)" class="back-button-container">
+      <i data-feather="chevron-left" class='back-icon'></i>
+      <span style="margin-bottom: 2px;"> anterior</span>
+    </a>
+  </div>
+
+</body>
+</html>
+
+<script>
+  feather.replace()
+</script>

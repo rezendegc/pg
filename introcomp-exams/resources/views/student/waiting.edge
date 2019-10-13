@@ -20,38 +20,12 @@
   </a>
 
 
-  <div id="mySidenav" class="sidenav">
-    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">
-        <div class="sidenav-rules">
-            <span class="text rules-title" style="margin-right: 8px; margin-left: 0px !important;">regras</span>
-            <i data-feather="chevron-right" class='chevron-icon'></i>
-        </div>
-    </a>
-    <p class="rules-text">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed in venenatis ante. Vestibulum a mi imperdiet, tincidunt massa a, feugiat mauris. Nulla vulputate bibendum consequat. Proin volutpat sem a varius viverra. Maecenas pellentesque urna eget metus malesuada, ultrices condimentum lectus viverra. Ut vitae ipsum sed erat efficitur condimentum imperdiet at velit. Phasellus pulvinar vitae augue eget dignissim. Nulla eget libero vehicula, euismod massa vitae, semper lacus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce non tortor ac ligula congue laoreet id sit amet justo. Integer tempus urna libero, id finibus dui facilisis ac. Ut elementum metus fringilla dui consectetur, in rhoncus arcu tristique.
-
-        Phasellus quis auctor orci. Curabitur placerat egestas dui in laoreet. Mauris sed felis ac tortor fringilla vulputate. Sed interdum lacus non consequat aliquam. Integer nec congue ligula, at tempus magna. Integer consectetur euismod dolor sit amet tempus. Vivamus faucibus tempor mattis. Sed ullamcorper pharetra condimentum. Mauris finibus erat eros, ac volutpat sapien faucibus eget. Quisque vestibulum nibh imperdiet, scelerisque purus quis, egestas dolor. Maecenas porttitor ultrices urna sed varius. Donec a leo velit. Duis mattis lacinia arcu id venenatis. Morbi felis neque, congue quis tristique non, lacinia non quam. Pellentesque aliquam iaculis nisl non sodales. Vivamus sed molestie sapien, eu congue ante.
-    </p>
-  </div>
-
-  <a href="javascript:void(0)" class="rules" onclick="openNav()">
-    <i data-feather="chevron-left" class='chevron-icon'></i>
-    <span class="text rules-title">regras</span>
-  </a>
+  @component('components.rules')
+  @endcomponent
 
 </body>
 </html>
 
 <script>
   feather.replace()
-
-  /* Set the width of the side navigation to 250px */
-  function openNav() {
-    document.getElementById("mySidenav").style.width = "600px";
-  }
-
-  /* Set the width of the side navigation to 0 */
-  function closeNav() {
-    document.getElementById("mySidenav").style.width = "0";
-  }
 </script>

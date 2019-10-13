@@ -1,4 +1,7 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat:300');
+@font-face {
+  font-family: Montserrat; 
+  src: url('/fonts/Montserrat.ttf');
+}
 
 html, body {
   height: 100%;
