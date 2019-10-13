@@ -26,3 +26,4 @@ Route.get('/logout', 'UserController.logout').middleware('auth').as('student.log
 
 Route.get('/exam', 'ExamController.show').middleware('isStudent').as('exam.show')
 Route.get('/waiting', 'ExamController.waitingStart').middleware('isStudent').as('exam.waiting')
+Route.get('/finished', 'ExamController.finished').middleware('isStudent').as('exam.finished')
