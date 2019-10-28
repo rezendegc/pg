@@ -4,30 +4,23 @@
   <meta charset="UTF-8" />
   <title>Introcomp Exams</title>
   {{ script('icons/feather.min') }}
+  {{ script('scripts/moment.min') }}
   {{ style('styles/student/exam') }}
 </head>
 <body>
   <div class="header">
-    <div class="timer">
+    <a class="timer" href="javascript:void(0)" onClick="toggleTimer()">
       <i data-feather="clock" class='clock-icon'></i>
-      <span class="text">00:15</span>
-    </div>
+      <span class="text" id="countdown"></span>
+    </a>
     
-    <div class="circle-unchecked"></div>
-    <div class="circle-unchecked"></div>
-    <div class="circle-checked"></div>
-    <div class="circle-checked"></div>
-    <div class="circle-unchecked"></div>
-    <div class="circle-unchecked"></div>
-    <div class="circle-unchecked"></div>
-    <div class="circle-unchecked"></div>
-    <div class="circle-unchecked"></div>
-    <div class="circle-unchecked"></div>
-    <div class="circle-unchecked"></div>
-    <div class="circle-unchecked"></div>
-    <div class="circle-unchecked"></div>
-    <div class="circle-unchecked"></div>
-    <div class="circle-unchecked"></div>
+    @each(question in questions)
+      @if(question.pivot.answer)
+        <div class="circle-checked" id="circle{{$loop.index}}"></div>
+      @else
+        <div class="circle-unchecked" id="circle{{$loop.index}}"></div>
+      @endif
+    @endeach
   
     @component('components.rules')
     @endcomponent
@@ -35,57 +28,200 @@
 
   
   <div class="exam-body">
-    <p class="title">questão 1:</p>
+    <p class="title" id="title"></p>
     <br>
-    <p class="description">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed in venenatis ante. Vestibulum a mi imperdiet, tincidunt massa a, feugiat mauris. Nulla vulputate bibendum consequat. Proin volutpat sem a varius viverra. Maecenas pellentesque urna eget metus malesuada, ultrices condimentum lectus viverra. Ut vitae ipsum sed erat efficitur condimentum imperdiet at velit. Phasellus pulvinar vitae augue eget dignissim. Nulla eget libero vehicula, euismod massa vitae, semper lacus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce non tortor ac ligula congue laoreet id sit amet justo. Integer tempus urna libero, id finibus dui facilisis ac. Ut elementum metus fringilla dui consectetur, in rhoncus arcu tristique.
-
-      Phasellus quis auctor orci. Curabitur placerat egestas dui in laoreet. Mauris sed felis ac tortor fringilla vulputate. Sed interdum lacus non consequat aliquam. Integer nec congue ligula, at tempus magna. Integer consectetur euismod dolor sit amet tempus. Vivamus faucibus tempor mattis. Sed ullamcorper pharetra condimentum. Mauris finibus erat eros, ac volutpat sapien faucibus eget. Quisque vestibulum nibh imperdiet, scelerisque purus quis, egestas dolor. Maecenas porttitor ultrices urna sed varius. Donec a leo velit. Duis mattis lacinia arcu id venenatis. Morbi felis neque, congue quis tristique non, lacinia non quam. Pellentesque aliquam iaculis nisl non sodales. Vivamus sed molestie sapien, eu congue ante.
-    
-      Morbi leo mi, nonummy eget, tristique non, rhoncus non, leo. Nullam faucibus mi quis velit. Integer in sapien. Fusce tellus odio, dapibus id?
-    </p>
+    <p class="description" id="description"> </p>
       
-    <label class="container">One
-      <input type="radio" checked="checked" name="radio">
+    <label class="container">
+      <span id="answer1"></span>
+      <input type="radio" name="radio" value="1">
       <span class="checkmark"></span>
     </label>
-    <label class="container">Two
-      <input type="radio" name="radio">
+    <label class="container">
+      <span id="answer2"></span>
+      <input type="radio" name="radio" value="2">
       <span class="checkmark"></span>
     </label>
-    <label class="container">Three
-      <input type="radio" name="radio">
+    <label class="container">
+      <span id="answer3"></span>
+      <input type="radio" name="radio" value="3">
       <span class="checkmark"></span>
     </label>
-    <label class="container">Four
-      <input type="radio" name="radio">
+    <label class="container">
+      <span id="answer4"></span>
+      <input type="radio" name="radio" value="4">
       <span class="checkmark"></span>
     </label>
-    <label class="container">Five
-      <input type="radio" name="radio">
+    <label class="container">
+      <span id="answer5"></span>
+      <input type="radio" name="radio" value="5">
       <span class="checkmark"></span>
     </label>
 
     <div style="margin: 100px;"></div>
 
-    <!--<a href="javascript:void(0)" class="next-button-container">
+    <a href="javascript:void(0)" class="next-button-container" id="next-button" onClick="nextQuestion()">
       <span style="margin-bottom: 2px;"> próxima</span>
       <i data-feather="chevron-right" class='chevron-icon'></i>
-    </a>-->
+    </a>
 
     @component('components.finish')
-      
+        
     @endcomponent
 
-    <a href="javascript:void(0)" class="back-button-container">
+    <a href="javascript:void(0)" class="back-button-container" id="back-button" onClick="previousQuestion()">
       <i data-feather="chevron-left" class='back-icon'></i>
       <span style="margin-bottom: 2px;"> anterior</span>
     </a>
   </div>
-
 </body>
 </html>
 
 <script>
+  let actualQuestion = 0
+  let title = document.getElementById("title")
+  let description = document.getElementById("description")
+  let answer1 = document.getElementById("answer1") 
+  let answer2 = document.getElementById("answer2") 
+  let answer3 = document.getElementById("answer3") 
+  let answer4 = document.getElementById("answer4") 
+  let answer5 = document.getElementById("answer5") 
+
+  let finishButton = document.getElementById("finish-button") 
+  let backButton = document.getElementById("back-button")
+  let nextButton = document.getElementById("next-button")
+  let questions = {{{ toJSON(questions) }}}
+  let answers = []
+
+  finishButton.style.display = 'none'
+  backButton.style.display = 'none'
+
+  function nextQuestion() {
+    if (actualQuestion < questions.length) {
+      actualQuestion++;
+      updateQuestion(actualQuestion - 1)
+    }
+    backButton.style.display = 'flex'
+    if (actualQuestion == questions.length - 1) {
+      finishButton.style.display = 'flex'
+      nextButton.style.display = 'none'
+    }
+  }
+
+  function previousQuestion() {
+    if (actualQuestion > 0) {
+      actualQuestion--;
+      updateQuestion(actualQuestion + 1)
+    }
+    nextButton.style.display = 'flex'
+    finishButton.style.display = 'none'
+    if (actualQuestion == 0) {
+      backButton.style.display = 'none'
+    }
+  }
+
+  function updateQuestion(question) {
+    let selectedAnswer = document.querySelector('input[name="radio"]:checked')
+    let circle = document.getElementById('circle' + question)
+    if (selectedAnswer) {
+      
+      circle.className = "circle-checked"
+
+      let answersBefore = []
+      answersBefore.push(questions[question].answer_1)
+      answersBefore.push(questions[question].answer_2)
+      answersBefore.push(questions[question].answer_3)
+      answersBefore.push(questions[question].answer_4)
+      answersBefore.push(questions[question].answer_5)
+
+      let selectedValue = document.getElementById('answer' + selectedAnswer.value).innerHTML
+
+      answersBefore.forEach((value) => {
+        if (value === selectedValue) {
+          questions[question].pivot.answer = selectedValue
+        }
+      })
+
+      selectedAnswer.checked = false
+    } else {
+      questions[question].pivot.answer = null
+      circle.className = "circle-unchecked"
+    }
+
+    answers = []
+    answers.push(questions[actualQuestion].answer_1)
+    answers.push(questions[actualQuestion].answer_2)
+    answers.push(questions[actualQuestion].answer_3)
+    answers.push(questions[actualQuestion].answer_4)
+    answers.push(questions[actualQuestion].answer_5)
+
+    let seed = ({{{ seed }}} + questions[actualQuestion].summary.length) * questions[actualQuestion].wording.length
+
+    const number1 = Math.floor((Math.abs(Math.sin(seed)*{{{ seed }}}*99 % 4.99)))
+    const number2 = Math.floor((Math.abs(Math.sin(seed)*{{{ seed }}}*99 % 3.99)))
+    const number3 = Math.floor((Math.abs(Math.sin(seed)*{{{ seed }}}*99 % 2.99)))
+    const number4 = Math.floor((Math.abs(Math.sin(seed)*{{{ seed }}}*99 % 1.99)))   
+
+    title.innerHTML = "questão " + (actualQuestion + 1)
+    description.innerHTML = questions[actualQuestion].wording
+    answer1.innerText = answers.splice(number1, 1)[0]
+    answer2.innerText = answers.splice(number2, 1)[0]
+    answer3.innerText = answers.splice(number3, 1)[0]
+    answer4.innerText = answers.splice(number4, 1)[0]
+    answer5.innerText = answers[0]
+    
+    if (questions[actualQuestion].pivot.answer) {
+      let markedAnswers = questions[actualQuestion].pivot.answer
+      if (answer1.innerText == markedAnswers) {
+        document.querySelector('input[name="radio"][value="1"]').checked = true
+      } else if (answer2.innerText == markedAnswers) {
+        document.querySelector('input[name="radio"][value="2"]').checked = true
+      } else if (answer3.innerText == markedAnswers) {
+        document.querySelector('input[name="radio"][value="3"]').checked = true
+      } else if (answer4.innerText == markedAnswers) {
+        document.querySelector('input[name="radio"][value="4"]').checked = true
+      } else if (answer5.innerText == markedAnswers) {
+        document.querySelector('input[name="radio"][value="5"]').checked = true
+      }
+    }
+  }
+
+  updateQuestion(actualQuestion)
+</script>
+
+<script>
+  let toggle = true;
+  let clock = document.getElementById("countdown") 
+  const end = moment({{{ toJSON(schedule.end_datetime) }}})
+
+  const time = moment.duration(end.diff(moment()))
+  if (time.milliseconds() < 0) {
+    window.location.replace({{{ toJSON(route('exam.finished')) }}})
+  }
+  clock.innerHTML = time.hours().toString().padStart(2, '0') + ":" + time.minutes().toString().padStart(2, '0')
+  setInterval(() => {
+    if (time.milliseconds() < 0) {
+      window.location.replace({{{ toJSON(route('exam.finished')) }}})
+    } else {
+      if (toggle) {
+        const time = moment.duration(end.diff(moment()))
+        
+        clock.innerHTML = time.hours().toString().padStart(2, '0') + ":" + time.minutes().toString().padStart(2, '0')
+      }
+    }
+
+  }, 1000)
+
   feather.replace()
+
+  function toggleTimer() {
+    toggle = !toggle;
+    if (!toggle) {
+      clock.innerHTML = "TEMPO"
+    } else {
+      const time = moment.duration(end.diff(moment()))
+
+      clock.innerHTML = time.hours().toString().padStart(2, '0') + ":" + time.minutes().toString().padStart(2, '0')
+    }
+  }
 </script>

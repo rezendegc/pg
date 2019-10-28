@@ -10,12 +10,12 @@
 <body>
   <div class="circle"></div>
   <div class="introcomp-logo"></div>
-  <div class="title">Aguarde, sua prova já vai começar</div>
+  <div class="title" id="title">Aguarde, sua prova já vai começar</div>
   <a class="timer" href="javascript:void(0)" onClick="toggleTimer()">
     <i data-feather="clock" class='clock-icon'></i>
-    <span class="text" id="countdown" value="shown"></span>
+    <span class="text" id="countdown"></span>
   </a>
-  <a href="javascript:void(0)" class="begin-button-container button-begin">
+  <a href="javascript:void(0)" class="begin-button-container button-begin" onClick="startExam()">
     <span style="margin-bottom: 2px;"> iniciar</span>
     <i data-feather="chevron-right" class='chevron-icon'></i>
   </a>
@@ -30,6 +30,7 @@
 <script>
   let toggle = true;
   var clock = document.getElementById("countdown") 
+  var title = document.getElementById("title") 
   const start = moment({{{ toJSON(schedule.start_datetime) }}})
   const resisterString = {{{ toJSON(schedule.register_time) }}}
   const registerTime = resisterString.split(':')
@@ -39,13 +40,17 @@
 
   const time = moment.duration(start.diff(moment()))
   clock.innerHTML = time.hours().toString().padStart(2, '0') + ":" + time.minutes().toString().padStart(2, '0')
+  if (time.milliseconds() < 0) {
+     clock.innerHTML = "00:00"
+     title.innerHTML = "Você já pode começar sua prova"
+  }
   setInterval(() => {
+    const time = moment.duration(start.diff(moment()))
     if (time.milliseconds() < 0) {
-
+      clock.innerHTML = "00:00"
+      title.innerHTML = "Você já pode começar sua prova"
     } else {
       if (toggle) {
-        const time = moment.duration(start.diff(moment()))
-        
         clock.innerHTML = time.hours().toString().padStart(2, '0') + ":" + time.minutes().toString().padStart(2, '0')
       }
     }
@@ -62,6 +67,13 @@
       const time = moment.duration(start.diff(moment()))
 
       clock.innerHTML = time.hours().toString().padStart(2, '0') + ":" + time.minutes().toString().padStart(2, '0')
+    }
+  }
+
+  function startExam() {
+    const time = moment.duration(start.diff(moment()))
+    if (time.milliseconds() < 0) {
+      window.location.replace({{{ toJSON(route('exam.show')) }}})
     }
   }
 </script>
