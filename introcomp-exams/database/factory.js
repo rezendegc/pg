@@ -56,15 +56,15 @@ Factory.blueprint('App/Models/User', (faker, i, data) => {
 
 Factory.blueprint('App/Models/Question', (faker, i, data) => {
     return {
-        summary: faker.paragraph(),
-        difficulty: faker.integer({ min: 1, max: 3 }),
-        is_image: (data[i] && data[i].isImage) || faker.bool(),
+        summary: faker.sentence(),
+        difficulty: (data && data.difficulty) || faker.integer({ min: 1, max: 4 }),
+        is_image: (data && data.isImage) || false,
         wording: faker.paragraph(),
-        correct_answer: (data[i] && data[i].correctAnswer) || faker.integer({ min: 1, max: 5 }),
-        answer_1: data[i].answer1 || faker.sentence(),
-        answer_2: data[i].answer2 || faker.sentence(),
-        answer_3: data[i].answer3 || faker.sentence(),
-        answer_4: data[i].answer4 || faker.sentence(),
-        answer_5: data[i].answer5 || faker.sentence(),
+        correct_answer: (data && data.correctAnswer) || faker.integer({ min: 1, max: 5 }),
+        answer_1: (data && data.answer1) || faker.sentence(),
+        answer_2: (data && data.answer2) || faker.sentence(),
+        answer_3: (data && data.answer3) || faker.sentence(),
+        answer_4: (data && data.answer4) || faker.sentence(),
+        answer_5: (data && data.answer5) || faker.sentence(),
     }
 })

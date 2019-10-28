@@ -22,6 +22,24 @@ class DatabaseSeeder {
     const admin = await Factory.model('App/Models/User').make({ password: '123456', role: "ADMIN" })
     const teacher = await Factory.model('App/Models/User').make({ password: '123456', role: "TEACHER" })
 
+    await Factory.model('App/Models/Question').createMany(10, {
+      difficulty: 1,
+      correctAnswer: 1
+    })
+    await Factory.model('App/Models/Question').createMany(10, {
+      difficulty: 2,
+      correctAnswer: 2
+    })
+    await Factory.model('App/Models/Question').createMany(10, {
+      difficulty: 3,
+      correctAnswer: 3
+    })
+    await Factory.model('App/Models/Question').createMany(5, {
+      difficulty: 4,
+      correctAnswer: 4
+    })
+
+
     await event.users().save(admin)
     await event.users().save(student)
     await event.users().save(teacher)

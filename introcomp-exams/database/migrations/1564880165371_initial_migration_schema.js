@@ -68,22 +68,23 @@ class InitialMigrationSchema extends Schema {
       table
         .integer("user_id")
         .unsigned()
+        .notNullable()
         .references("id")
         .inTable("users");
       table.timestamps();
     });
     await this.create("questions", table => {
       table.increments();
-      table.string("summary");
+      table.text("summary");
       table.integer("difficulty").notNullable();
       table.bool("is_image").defaultTo(false);
-      table.string("wording").notNullable();
+      table.text("wording").notNullable();
       table.string("correct_answer").notNullable();
-      table.string("answer_1").notNullable();
-      table.string("answer_2").notNullable();
-      table.string("answer_3").notNullable();
-      table.string("answer_4").notNullable();
-      table.string("answer_5").notNullable();
+      table.text("answer_1").notNullable();
+      table.text("answer_2").notNullable();
+      table.text("answer_3").notNullable();
+      table.text("answer_4").notNullable();
+      table.text("answer_5").notNullable();
       table.timestamps();
     });
     await this.create("exam_question", table => {

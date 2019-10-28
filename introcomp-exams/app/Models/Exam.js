@@ -4,7 +4,7 @@
 const Model = use("Model");
 
 class Exam extends Model {
-  users() {
+  user() {
     return this.belongsTo("App/Models/User");
   }
 
@@ -17,9 +17,9 @@ class Exam extends Model {
   }
 
   questions() {
-    return this.belongsToMany("App/Models/Question").pivotTable(
-      "exam_questions"
-    );
+    return this.belongsToMany("App/Models/Question")
+      .pivotTable("exam_question")
+      .withPivot(['answer'])
   }
 }
 
