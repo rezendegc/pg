@@ -4,16 +4,19 @@
   <meta charset="UTF-8" />
   <title>Introcomp Exams</title>
   {{ script('icons/feather.min') }}
+  {{ script('scripts/countdown.min') }}
+  {{ script('scripts/moment.min') }}
+  {{ script('scripts/moment-countdown.min') }}
   {{ style('styles/student/waiting') }}
 </head>
 <body>
   <div class="circle"></div>
   <div class="introcomp-logo"></div>
   <div class="title">Aguarde, sua prova já vai começar</div>
-  <div class="timer">
+  <a class="timer" href="javascript:void(0)" onClick="toggleTimer()">
     <i data-feather="clock" class='clock-icon'></i>
-    <span class="text">{{ countdown(schedule) }}</span>
-  </div>
+    <span class="text" id="countdown" value="shown"></span>
+  </a>
   <a href="javascript:void(0)" class="begin-button-container button-begin">
     <span style="margin-bottom: 2px;"> iniciar</span>
     <i data-feather="chevron-right" class='chevron-icon'></i>
@@ -27,6 +30,40 @@
 </html>
 
 <script>
-  {{ countdown(schedule) }}
+  let toggle = true;
+  var clock = document.getElementById("countdown") 
+  const start = moment({{{ toJSON(schedule.start_datetime) }}})
+  const resisterString = {{{ toJSON(schedule.register_time) }}}
+  const registerTime = resisterString.split(':')
+  start.add(registerTime[0], 'h')
+  start.add(registerTime[1], 'm')
+  start.add(registerTime[2], 's')
+
+  const time = moment.duration(start.diff(moment()))
+  clock.innerHTML = time.hours().toString().padStart(2, '0') + ":" + time.minutes().toString().padStart(2, '0')
+  setInterval(() => {
+    if (time.milliseconds() < 0) {
+      
+    } else {
+      if (toggle) {
+        const time = moment.duration(start.diff(moment()))
+        
+        clock.innerHTML = time.hours().toString().padStart(2, '0') + ":" + time.minutes().toString().padStart(2, '0')
+      }
+    }
+
+  }, 1000)
+
   feather.replace()
+
+  function toggleTimer() {
+    toggle = !toggle;
+    if (!toggle) {
+      clock.innerHTML = "TEMPO"
+    } else {
+      const time = moment.duration(start.diff(moment()))
+
+      clock.innerHTML = time.hours().toString().padStart(2, '0') + ":" + time.minutes().toString().padStart(2, '0')
+    }
+  }
 </script>
