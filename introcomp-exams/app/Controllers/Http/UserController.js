@@ -33,20 +33,22 @@ class UserController {
       .where({ email, role: 'STUDENT' })
       .first()
 
-    const event = await user.event().first()
-    const schedule = event != null
-      ? await event
-        .exam_schedules()
-        .where('start_datetime', '<', formatDate(moment()))
-        .andWhere('end_datetime', '>', formatDate(moment()))
-        .first()
-      : null
+    if (user) {
+      const event = await user.event().first()
+      const schedule = event != null
+        ? await event
+          .exam_schedules()
+          .where('start_datetime', '<', formatDate(moment()))
+          .andWhere('end_datetime', '>', formatDate(moment()))
+          .first()
+        : null
 
-    if (!event || !schedule) {
-      session.flashExcept(['email'])
-      session.flash({ error: 'Não há provas acontecendo no momento!' })
+      if (!event || !schedule) {
+        session.flashExcept(['email'])
+        session.flash({ error: 'Não há provas acontecendo no momento!' })
 
-      return response.route('student.index')
+        return response.route('student.index')
+      }
     }
 
     try {

@@ -12,7 +12,7 @@
   <div class="title">Aguarde, sua prova já vai começar</div>
   <div class="timer">
     <i data-feather="clock" class='clock-icon'></i>
-    <span class="text">00:15</span>
+    <span class="text">{{ countdown(schedule) }}</span>
   </div>
   <a href="javascript:void(0)" class="begin-button-container button-begin">
     <span style="margin-bottom: 2px;"> iniciar</span>
@@ -27,5 +27,6 @@
 </html>
 
 <script>
+  {{ countdown(schedule) }}
   feather.replace()
 </script>
