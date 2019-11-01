@@ -33,9 +33,12 @@ class UserController {
       .where({ email, role: 'STUDENT' })
       .first()
 
+    let event
+    let schedule
+
     if (user) {
-      const event = await user.event().first()
-      const schedule = event != null
+      event = await user.event().first()
+      schedule = event != null
         ? await event
           .exam_schedules()
           .where('start_datetime', '<', formatDate(moment()))

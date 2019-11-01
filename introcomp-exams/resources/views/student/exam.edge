@@ -16,13 +16,13 @@
     
     @each(question in questions)
       @if(question.pivot.answer)
-        <div class="circle-checked" id="circle{{$loop.index}}"></div>
+        <div class="circle-checked" id="circle{{$loop.index}}" onClick="jumpToQuestion({{$loop.index}})"></div>
       @else
-        <div class="circle-unchecked" id="circle{{$loop.index}}"></div>
+        <div class="circle-unchecked" id="circle{{$loop.index}}" onClick="jumpToQuestion({{$loop.index}})"></div>
       @endif
     @endeach
   
-    @component('components.rules')
+    @component('components.rules', text=rules)
     @endcomponent
   </div>
 
@@ -34,27 +34,27 @@
       
     <label class="container">
       <span id="answer1"></span>
-      <input type="radio" name="radio" value="1">
+      <input type="radio" name="radio" value="1" id="a1" onClick="document.getElementById('abc').checked = false;">
       <span class="checkmark"></span>
     </label>
     <label class="container">
       <span id="answer2"></span>
-      <input type="radio" name="radio" value="2">
+      <input type="radio" name="radio" value="2" id="a2">
       <span class="checkmark"></span>
     </label>
     <label class="container">
       <span id="answer3"></span>
-      <input type="radio" name="radio" value="3">
+      <input type="radio" name="radio" value="3" id="a3">
       <span class="checkmark"></span>
     </label>
     <label class="container">
       <span id="answer4"></span>
-      <input type="radio" name="radio" value="4">
+      <input type="radio" name="radio" value="4" id="a4">
       <span class="checkmark"></span>
     </label>
     <label class="container">
       <span id="answer5"></span>
-      <input type="radio" name="radio" value="5">
+      <input type="radio" name="radio" value="5" id="a5dd">
       <span class="checkmark"></span>
     </label>
 
@@ -95,6 +95,26 @@
 
   finishButton.style.display = 'none'
   backButton.style.display = 'none'
+
+  function jumpToQuestion(question) {
+    if (question == 0) {
+      backButton.style.display = 'none'
+      finishButton.style.display = 'none'
+      nextButton.style.display = 'flex'
+    } else if (question == questions.length - 1) {
+      finishButton.style.display = 'flex'
+      nextButton.style.display = 'none'
+      backButton.style.display = 'flex'
+    } else {
+      backButton.style.display = 'flex'
+      nextButton.style.display = 'flex'
+      finishButton.style.display = 'none'
+    }
+
+    let previousQuestion = actualQuestion
+    actualQuestion = question
+    updateQuestion(previousQuestion)
+  }
 
   function nextQuestion() {
     if (actualQuestion < questions.length) {
@@ -147,6 +167,7 @@
       questions[question].pivot.answer = null
       circle.className = "circle-unchecked"
     }
+    boolRadio = null;
 
     answers = []
     answers.push(questions[actualQuestion].answer_1)
@@ -171,22 +192,47 @@
     answer5.innerText = answers[0]
     
     if (questions[actualQuestion].pivot.answer) {
-      let markedAnswers = questions[actualQuestion].pivot.answer
-      if (answer1.innerText == markedAnswers) {
-        document.querySelector('input[name="radio"][value="1"]').checked = true
-      } else if (answer2.innerText == markedAnswers) {
-        document.querySelector('input[name="radio"][value="2"]').checked = true
-      } else if (answer3.innerText == markedAnswers) {
-        document.querySelector('input[name="radio"][value="3"]').checked = true
-      } else if (answer4.innerText == markedAnswers) {
-        document.querySelector('input[name="radio"][value="4"]').checked = true
-      } else if (answer5.innerText == markedAnswers) {
-        document.querySelector('input[name="radio"][value="5"]').checked = true
+      let markedAnswer = questions[actualQuestion].pivot.answer
+      if (answer1.innerText == markedAnswer) {
+        let input = document.querySelector('input[name="radio"][value="1"]')
+        input.checked = true
+        boolRadio = input
+      } else if (answer2.innerText == markedAnswer) {
+        let input = document.querySelector('input[name="radio"][value="2"]')
+        input.checked = true
+        boolRadio = input
+      } else if (answer3.innerText == markedAnswer) {
+        let input = document.querySelector('input[name="radio"][value="3"]')
+        input.checked = true
+        boolRadio = input
+      } else if (answer4.innerText == markedAnswer) {
+        let input = document.querySelector('input[name="radio"][value="4"]')
+        input.checked = true
+        boolRadio = input
+      } else if (answer5.innerText == markedAnswer) {
+        let input = document.querySelector('input[name="radio"][value="5"]')
+        input.checked = true
+        boolRadio = input
       }
     }
   }
 
   updateQuestion(actualQuestion)
+</script>
+
+<script>
+  const allRadios = document.getElementsByName('radio');
+  let boolRadio;
+  allRadios.forEach(radio => {
+    radio.onclick = function () {
+      if(boolRadio == this){
+        this.checked = false;
+        boolRadio = null;
+      } else{
+        boolRadio = this;
+      }
+    }
+  });
 </script>
 
 <script>
