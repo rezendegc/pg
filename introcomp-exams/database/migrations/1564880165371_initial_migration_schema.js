@@ -103,6 +103,7 @@ class InitialMigrationSchema extends Schema {
         .references("id")
         .inTable("questions")
         .notNullable();
+      table.timestamps();
     });
   }
 

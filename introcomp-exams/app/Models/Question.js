@@ -5,7 +5,7 @@ const Model = use("Model");
 
 class Question extends Model {
   exams() {
-    return this.belongsToMany("App/Models/Exam").pivotTable("exam_question").withPivot(['answer'])
+    return this.belongsToMany("App/Models/Exam").pivotModel("App/Models/ExamQuestion").withPivot(['answer'])
   }
 }
 

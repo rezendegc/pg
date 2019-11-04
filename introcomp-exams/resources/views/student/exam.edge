@@ -32,6 +32,10 @@
     <br>
     <p class="description" id="description"> </p>
       
+    {{ csrfField() }}
+
+    <input type="hidden" name="_csrf" value="xxxxxx">
+
     <label class="container">
       <span id="answer1"></span>
       <input type="radio" name="radio" value="1" id="a1" onClick="document.getElementById('abc').checked = false;">
@@ -78,7 +82,34 @@
 </html>
 
 <script>
-  let actualQuestion = 0
+function saveAnswer(id) {
+  let answer = "" 
+  if (boolRadio) {
+    const answerText = document.getElementById("answer" + boolRadio.value).innerText
+    if (questions[actualQuestion].answer_1 === answerText) answer = "1"
+    else if (questions[actualQuestion].answer_2 === answerText) answer = "2"
+    else if (questions[actualQuestion].answer_3 === answerText) answer = "3"
+    else if (questions[actualQuestion].answer_4 === answerText) answer = "4"
+    else if (questions[actualQuestion].answer_5 === answerText) answer = "5"
+  }
+
+  var xhttp = new XMLHttpRequest();
+  // xhttp.onreadystatechange = function() {
+  //   if (this.readyState == 4 && this.status == 200) {
+  //   //  document.getElementById("demo").innerHTML = this.responseText;
+  //     console.log("yay"); 
+  //   }
+  // };
+  xhttp.open("POST", "/examquestion/" + questions[id].id, true);
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.setRequestHeader("x-csrf-token", document.getElementsByName("_csrf")[0].value);
+  xhttp.send("answer=" + answer );
+}
+</script>
+
+
+<script>
+  let actualQuestion = -1
   let title = document.getElementById("title")
   let description = document.getElementById("description")
   let answer1 = document.getElementById("answer1") 
@@ -93,10 +124,32 @@
   let questions = {{{ toJSON(questions) }}}
   let answers = []
 
-  finishButton.style.display = 'none'
-  backButton.style.display = 'none'
+  questions.forEach((question, index) => {
+    if (question.pivot.answer) {
+      document.getElementById('circle' + index).className = "circle-checked"
+    } else if (actualQuestion === -1) {
+      actualQuestion = index
+    }
+  })
+
+  if (actualQuestion === -1) actualQuestion = 0;
+  else if (actualQuestion === 0) {
+    finishButton.style.display = 'none'
+    backButton.style.display = 'none'
+    nextButton.style.display = 'flex'
+  } else if (actualQuestion === questions.length - 1) {
+    finishButton.style.display = 'flex'
+    nextButton.style.display = 'none'
+    backButton.style.display = 'flex'
+  } else {
+    backButton.style.display = 'flex'
+    nextButton.style.display = 'flex'
+    finishButton.style.display = 'none'
+  }
 
   function jumpToQuestion(question) {
+    saveAnswer(actualQuestion)
+
     if (question == 0) {
       backButton.style.display = 'none'
       finishButton.style.display = 'none'
@@ -118,6 +171,7 @@
 
   function nextQuestion() {
     if (actualQuestion < questions.length) {
+      saveAnswer(actualQuestion)
       actualQuestion++;
       updateQuestion(actualQuestion - 1)
     }
@@ -130,6 +184,7 @@
 
   function previousQuestion() {
     if (actualQuestion > 0) {
+      saveAnswer(actualQuestion)
       actualQuestion--;
       updateQuestion(actualQuestion + 1)
     }
@@ -142,6 +197,7 @@
 
   function updateQuestion(question) {
     let selectedAnswer = document.querySelector('input[name="radio"]:checked')
+    
     let circle = document.getElementById('circle' + question)
     if (selectedAnswer) {
       
@@ -156,14 +212,14 @@
 
       let selectedValue = document.getElementById('answer' + selectedAnswer.value).innerHTML
 
-      answersBefore.forEach((value) => {
+      answersBefore.forEach((value, index) => {
         if (value === selectedValue) {
-          questions[question].pivot.answer = selectedValue
+          questions[question].pivot.answer = index + 1
         }
       })
 
       selectedAnswer.checked = false
-    } else {
+    } else if (!firstTime) {
       questions[question].pivot.answer = null
       circle.className = "circle-unchecked"
     }
@@ -190,9 +246,16 @@
     answer3.innerText = answers.splice(number3, 1)[0]
     answer4.innerText = answers.splice(number4, 1)[0]
     answer5.innerText = answers[0]
+
     
     if (questions[actualQuestion].pivot.answer) {
       let markedAnswer = questions[actualQuestion].pivot.answer
+      if (markedAnswer == 1) markedAnswer = questions[actualQuestion].answer_1
+      if (markedAnswer == 2) markedAnswer = questions[actualQuestion].answer_2
+      if (markedAnswer == 3) markedAnswer = questions[actualQuestion].answer_3
+      if (markedAnswer == 4) markedAnswer = questions[actualQuestion].answer_4
+      if (markedAnswer == 5) markedAnswer = questions[actualQuestion].answer_5
+
       if (answer1.innerText == markedAnswer) {
         let input = document.querySelector('input[name="radio"][value="1"]')
         input.checked = true
@@ -217,7 +280,9 @@
     }
   }
 
+  let firstTime = true
   updateQuestion(actualQuestion)
+  firstTime = false;
 </script>
 
 <script>
@@ -271,3 +336,4 @@
     }
   }
 </script>
+

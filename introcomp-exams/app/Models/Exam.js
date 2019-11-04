@@ -18,7 +18,7 @@ class Exam extends Model {
 
   questions() {
     return this.belongsToMany("App/Models/Question")
-      .pivotTable("exam_question")
+      .pivotModel("App/Models/ExamQuestion")
       .withPivot(['answer'])
   }
 }
