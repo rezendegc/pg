@@ -72,6 +72,12 @@ class InitialMigrationSchema extends Schema {
         .notNullable()
         .references("id")
         .inTable("users");
+      table
+        .enu("status", ["WAITING", "DOING", "FINISHED"], {
+          enumName: "UserRoles"
+        })
+        .defaultTo("WAITING")
+        .notNullable();
       table.timestamps();
     });
     await this.create("questions", table => {

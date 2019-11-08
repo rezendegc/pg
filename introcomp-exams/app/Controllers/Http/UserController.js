@@ -31,7 +31,18 @@ class UserController {
           .andWhere('end_date', '>', formatDate(moment()))
       })
       .where({ email, role: 'STUDENT' })
+      .with('exam')
       .first()
+
+    const userJSON = user && user.toJSON()
+    if (userJSON && userJSON.exam && userJSON.exam.status) {
+      if (userJSON.exam.status === 'FINISHED') {
+        session.flashExcept(['email'])
+        session.flash({ error: 'Usuário já finalizou a prova!' })
+
+        return response.route('student.index')
+      }
+    }
 
     let event
     let schedule
@@ -55,7 +66,10 @@ class UserController {
     }
 
     try {
-      await auth.login(user)
+      if (user)
+        await auth.login(user)
+      else
+        throw Error("No user found")
     } catch (e) {
       console.debug(e)
 
