@@ -26,8 +26,9 @@ class UserController {
     await auth.logout()
 
     const user = await User.query()
-      .with('event', (builder) => {
-        builder.where('start_date', '<', formatDate(moment()))
+      .with('event', builder => {
+        builder
+          .where('start_date', '<', formatDate(moment()))
           .andWhere('end_date', '>', formatDate(moment()))
       })
       .where({ email, role: 'STUDENT' })
@@ -49,13 +50,14 @@ class UserController {
 
     if (user) {
       event = await user.event().first()
-      schedule = event != null
-        ? await event
-          .exam_schedules()
-          .where('start_datetime', '<', formatDate(moment()))
-          .andWhere('end_datetime', '>', formatDate(moment()))
-          .first()
-        : null
+      schedule =
+        event != null
+          ? await event
+              .exam_schedules()
+              .where('start_datetime', '<', formatDate(moment()))
+              .andWhere('end_datetime', '>', formatDate(moment()))
+              .first()
+          : null
 
       if (!event || !schedule) {
         session.flashExcept(['email'])
@@ -66,10 +68,8 @@ class UserController {
     }
 
     try {
-      if (user)
-        await auth.login(user)
-      else
-        throw Error("No user found")
+      if (user) await auth.login(user)
+      else throw Error('No user found')
     } catch (e) {
       console.debug(e)
 
@@ -90,20 +90,53 @@ class UserController {
       const amountHard = Env.get('HARD_QUESTIONS', 4)
       const amountSpecial = Env.get('SPECIAL_QUESTIONS', 1)
 
-      const easyQuestions = await Question.query().where({ difficulty: 1 }).orderByRaw('RAND()').limit(amountEasy).fetch()
-      const mediumQuestions = await Question.query().where({ difficulty: 2 }).orderByRaw('RAND()').limit(amountMedium).fetch()
-      const hardQuestions = await Question.query().where({ difficulty: 3 }).orderByRaw('RAND()').limit(amountHard).fetch()
-      const specialQuestions = await Question.query().where({ difficulty: 4 }).orderByRaw('RAND()').limit(amountSpecial).fetch()
+      const easyQuestions = await Question.query()
+        .where({ difficulty: 1 })
+        .orderByRaw('RAND()')
+        .limit(amountEasy)
+        .fetch()
+      const mediumQuestions = await Question.query()
+        .where({ difficulty: 2 })
+        .orderByRaw('RAND()')
+        .limit(amountMedium)
+        .fetch()
+      const hardQuestions = await Question.query()
+        .where({ difficulty: 3 })
+        .orderByRaw('RAND()')
+        .limit(amountHard)
+        .fetch()
+      const specialQuestions = await Question.query()
+        .where({ difficulty: 4 })
+        .orderByRaw('RAND()')
+        .limit(amountSpecial)
+        .fetch()
 
       let questionIds = []
-      easyQuestions.rows.forEach(element => { questionIds.push(element.id); });
-      mediumQuestions.rows.forEach(element => { questionIds.push(element.id); });
-      hardQuestions.rows.forEach(element => { questionIds.push(element.id); });
-      specialQuestions.rows.forEach(element => { questionIds.push(element.id); });
+      easyQuestions.rows.forEach(element => {
+        questionIds.push(element.id)
+      })
+      mediumQuestions.rows.forEach(element => {
+        questionIds.push(element.id)
+      })
+      hardQuestions.rows.forEach(element => {
+        questionIds.push(element.id)
+      })
+      specialQuestions.rows.forEach(element => {
+        questionIds.push(element.id)
+      })
+
+      const shuffle = array => {
+        for (let i = array.length - 1; i > 0; i--) {
+          let j = Math.floor(Math.random() * (i + 1));
+
+          [array[i], array[j]] = [array[j], array[i]];
+        }
+      }
+      
+      shuffle(questionIds)
 
       await exam.questions().attach(questionIds)
     }
-
 
     return response.route('exam.waiting')
   }

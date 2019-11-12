@@ -63,6 +63,8 @@ class ExamController {
       await exam.save()
     }
 
+    await auth.logout()
+
     return view.render('student/finished')
   }
 }
