@@ -1,0 +1,15 @@
+a:link
+{
+	text-decoration:none; 
+}
+a
+{
+	color: inherit;
+}
+body
+{
+	background-image:url('/images/bg_menu.jpg') ;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+}

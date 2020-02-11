@@ -1,0 +1,312 @@
+<html>
+
+<head>
+    <title>Gerador de Questão</title>
+    {{ style('styles/admin/bootstrap.min') }}
+    {{ script('scripts/jquery.min') }}
+    {{ style('styles/admin/cria') }}
+    {{ script('scripts/nicEdit') }}
+	<script type="text/javascript">//<![CDATA[
+		bkLib.onDomLoaded(function() {
+			nicEditors.editors.push(
+				new nicEditor().panelInstance(
+				    document.getElementById('tibia')
+				)
+			);
+		});
+		//]]>
+	</script>
+</head>
+
+<body>
+    @component('components.header')
+    @endcomponent
+	<br><br>
+	<div class="container" id="container">
+		<div class="row justify-content-center">
+			<div class="col-12">
+
+				
+				<div class="descricao">
+	
+	</div>
+	<div class="formulario">
+		<form name="questoes" id="questoes" method="POST" enctype="multipart/form-data" action="" autocomplete="off">
+			<p><h5>Resumo questão:</h5></p> 
+			<textarea rows="4"  required name="resumo" class="resumo_box form-control required" type="text" maxlength="254" placeholder="Escreva aqui um resumo sucinto da questão (max 255 caracteres)"></textarea><br>
+	
+			<p><h5>Enunciado:</h5></p> 
+			<textarea rows="7" name="enunciado" id="tibia" class="enunciado_box form-control" type="text" placeholder="Escreva aqui o enunciado da questão"></textarea><br><br>
+			<br><br>
+
+			<p><h5>Alternativas:</h5></p>
+			<div class="row">
+				<div class="col-2"><input id="op1" class="tipo_alt1" style="color:black !important;" name="tipo_alternativa" value="texto" type="radio" checked><label for="op1">Texto</label></div>  
+				<div class="col-2"><input id="op2" class="tipo_alt2" name="tipo_alternativa" value="imagem" type="radio"><label for="op2">Imagem</label></div><br><br>
+			</div>
+			<!-- Caso seja texto -->
+			<div class="esconde_mostra_texto">
+
+			
+				<input id="txt1" name="alt_1" type="text" class="form-control" placeholder="Alternativa CORRETA" required><br>
+				<input id="txt2" name="alt_2" type="text" class="form-control" placeholder="Alternativa Errada" required><br>
+				<input id="txt3" name="alt_3" type="text" class="form-control" placeholder="Alternativa Errada" required><br>
+				<input id="txt4" name="alt_4" type="text" class="form-control" placeholder="Alternativa Errada" required><br>
+				<input id="txt5" name="alt_5" type="text" class="form-control" placeholder="Alternativa Errada" required><br>
+			</div>
+
+			<!-- Caso seja imagem -->
+			<div class="esconde_mostra_img">
+				<label for='in2' class="btn btn-primary"><input id="in2" type="file" name="imagem_alt_1" accept="image/jpeg, image/png"></label><span id="file2"></span><br>
+				<label for='in3' class="btn btn-primary"><input id="in3" type="file" name="imagem_alt_2" accept="image/jpeg, image/png"></label><span id="file3"></span><br>
+				<label for='in4' class="btn btn-primary"><input id="in4" type="file" name="imagem_alt_3" accept="image/jpeg, image/png"></label><span id="file4"></span><br>
+				<label for='in5' class="btn btn-primary"><input id="in5" type="file" name="imagem_alt_4" accept="image/jpeg, image/png"></label><span id="file5"></span><br>
+				<label for='in6' class="btn btn-primary"><input id="in6" type="file" name="imagem_alt_5" accept="image/jpeg, image/png"></label><span id="file6"></span><br>
+			</div>
+
+						<script>
+
+
+							var $input2    = document.getElementById('in2'),
+    						$fileName2 = document.getElementById('file2');
+							$fileName2.textContent="Nenhum Arquivo Encontrado - Alternativa CORRETA";
+
+							$input2.addEventListener('change', function(){
+  							$fileName2.textContent = this.value + " - Alternativa CORRETA";
+							if($fileName2.textContent==" - Alternativa CORRETA")
+							$fileName2.textContent="Nenhum Arquivo Encontrado - Alternativa CORRETA";
+							});
+				
+							var $input3 = document.getElementById('in3'),
+    						$fileName3 = document.getElementById('file3');
+							$fileName3.textContent="Nenhum Arquivo Encontrado - Alternativa Errada";
+
+							$input3.addEventListener('change', function(){
+  							$fileName3.textContent = this.value + " - Alternativa Errada";
+							if($fileName3.textContent==" - Alternativa Errada")
+							$fileName3.textContent="Nenhum Arquivo Encontrado - Alternativa Errada";
+							});
+			
+							var $input4    = document.getElementById('in4'),
+    						$fileName4 = document.getElementById('file4');
+							$fileName4.textContent="Nenhum Arquivo Encontrado - Alternativa Errada";
+
+							$input4.addEventListener('change', function(){
+  							$fileName4.textContent = this.value+ " - Alternativa Errada";
+							if($fileName4.textContent==" - Alternativa Errada")
+							$fileName4.textContent="Nenhum Arquivo Encontrado - Alternativa Errada";
+							});
+
+							var $input5    = document.getElementById('in5'),
+    						$fileName5 = document.getElementById('file5');
+							$fileName5.textContent="Nenhum Arquivo Encontrado - Alternativa Errada";
+
+							$input5.addEventListener('change', function(){
+  							$fileName5.textContent = this.value+ " - Alternativa Errada";
+							if($fileName5.textContent==" - Alternativa Errada")
+							$fileName5.textContent="Nenhum Arquivo Encontrado - Alternativa Errada";
+							});
+
+							var $input6    = document.getElementById('in6'),
+    						$fileName6 = document.getElementById('file6');
+							$fileName6.textContent="Nenhum Arquivo Encontrado - Alternativa Errada";
+
+							$input6.addEventListener('change', function(){
+  							$fileName6.textContent = this.value+ " - Alternativa Errada";
+							if($fileName6.textContent==" - Alternativa Errada")
+							$fileName6.textContent="Nenhum Arquivo Encontrado - Alternativa Errada";
+							});
+			</script>
+			<br>
+			
+			<script>
+				// Esconde/Mostra Op
+				$(document).ready(function(){
+					$( ".esconde_mostra_img" ).hide();
+					$( ".esconde_mostra_texto" ).show();
+					$('input[name=tipo_alternativa]').click(function() {
+						if($('.tipo_alt1').is(':checked')) {
+							$( 'input[name=alt_1]' ).attr('required',true);
+							$( 'input[name=alt_2]' ).attr('required',true);
+							$( 'input[name=alt_3]' ).attr('required',true);
+							$( 'input[name=alt_4]' ).attr('required',true);
+							$( 'input[name=alt_5]' ).attr('required',true);
+							$( 'input[name=imagem_alt_1]' ).removeAttr('required');
+							$( 'input[name=imagem_alt_2]' ).removeAttr('required');
+							$( 'input[name=imagem_alt_3]' ).removeAttr('required');
+							$( 'input[name=imagem_alt_4]' ).removeAttr('required');
+							$( 'input[name=imagem_alt_5]' ).removeAttr('required');
+							$( ".esconde_mostra_img" ).hide();
+							$( ".esconde_mostra_texto" ).show();
+						} else {
+							$( 'input[name=alt_1]' ).removeAttr('required');
+							$( 'input[name=alt_2]' ).removeAttr('required');
+							$( 'input[name=alt_3]' ).removeAttr('required');
+							$( 'input[name=alt_4]' ).removeAttr('required');
+							$( 'input[name=alt_5]' ).removeAttr('required');
+							$( 'input[name=imagem_alt_1]' ).attr('required',true);
+							$( 'input[name=imagem_alt_2]' ).attr('required',true);
+							$( 'input[name=imagem_alt_3]' ).attr('required',true);
+							$( 'input[name=imagem_alt_4]' ).attr('required',true);
+							$( 'input[name=imagem_alt_5]' ).attr('required',true);
+							$( ".esconde_mostra_texto" ).hide();
+							$( ".esconde_mostra_img" ).show();
+						}
+					});
+				});
+				
+			</script>
+
+			<p><h5>Dificuldade:</h5></p><br>
+
+			<div class="row ">
+
+										<div class="col-4"><input id="dif1" required name="dificuldade" type="radio" value="1">
+
+										<label for="dif1" class="facil">Fácil</label></div>
+
+										<div class="col-4"><input id="dif2" required name="dificuldade" type="radio" value="2" >
+
+										<label for="dif2" class="medio"> Média</label></div>
+
+										<div class="col-4"><input id="dif3" required name="dificuldade" type="radio" value="3">
+
+
+										<label for="dif3" class="dificil">Difícil</label></div>
+				</div>
+				
+			<p><h5>Categoria:</h5></p><br>
+
+			<div class="row ">
+				
+									<div class="col-4"><input value="TODO" type="radio" required name="categoria" id="option1"> <label for="option1">Lógica/Matematica</label></div>
+							 	
+								
+									<div class="col-4"><input value="TODO" type="radio" required name="categoria" id="option2"><label for="option2">Mod</label></div>
+							 	
+
+								
+								
+							 
+			</div>
+			<br><br>
+			<p><button id="Preview" type="button" class="btn btn-success" value="Preview">Preview</button></p>
+			
+		</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Preview -->
+<div id="prev_cont">
+	<div class="countdown col-12 mx-auto d-block text-center"><p id="demo" class="countdown">00:00</p></div>
+	<div class="enunciado col-12" id="p_enunciado"></div> 
+	<div class="alternativas" id="alt_1">
+		<form  id="alternativas" method="POST" enctype="multipart/form-data" action="blabla.php">
+			<input value="" type="radio" name="alternativa_marcada" ><label for="option1" id="opt1"></label><br />
+			<input value="" type="radio" name="alternativa_marcada" ><label for="option2" id="opt2"></label><br />
+			<input value="" type="radio" name="alternativa_marcada" ><label for="option3" id="opt3"></label><br />
+			<input value="" type="radio" name="alternativa_marcada" ><label for="option4" id="opt4"></label><br />
+			<input value="" type="radio" name="alternativa_marcada" ><label for="option5" id="opt5"></label><br />
+		</form>
+	</div>
+	<div class="alternativas" id="alt_2">
+		<form name="alternativas" id="alternativas" method="POST" enctype="multipart/form-data" action="blabla.php">
+			<input value="" type="radio" name="alternativa_marcada" id="imginpt"><label for="option1"><img id="opt6" style="width: 150px; height: 150px" src="""></label><br />
+			<input value="" type="radio" name="alternativa_marcada"><label for="option2"><img id="opt7" style="width: 150px; height: 150px" src="""></label><br />
+			<input value="" type="radio" name="alternativa_marcada"><label for="option3"><img id="opt8" style="width: 150px; height: 150px" src=""></label><br />
+			<input value="" type="radio" name="alternativa_marcada"><label for="option4"><img id="opt9" style="width: 150px; height: 150px" src=""></label><br />
+			<input value="" type="radio" name="alternativa_marcada"><label for="option5"><img id="opt10" style="width: 150px; height: 150px" src=""></label><br />
+		</form>
+	</div>
+	<div class="col-12 text-center" style="margin-top: 20px;">
+	<button style="margin-right: 50px;" id="Voltar" type="button" class="btn btn-warning">Voltar</button>
+	<button id="Enviar" type="submit" class="btn btn-success" form="questoes">Enviar</button>
+	</div>
+</div>
+
+</body>
+
+</html>
+
+
+<script>
+	function readURL(input, string) {
+		if (input.files && input.files[0]) {
+			var reader = new FileReader();
+			
+			reader.onload = function(e) {
+				$(string).attr('src', e.target.result);
+			}
+			
+			reader.readAsDataURL(input.files[0]);
+		}
+	}
+	
+	$('#in2').change(function () {
+		readURL(this, "#opt6");
+	});
+	$('#in3').change(function () {
+		readURL(this, "#opt7");
+	});
+	$('#in4').change(function () {
+		readURL(this, "#opt8");
+	});
+	$('#in5').change(function () {
+		readURL(this, "#opt9");
+	});
+	$('#in6').change(function () {
+		readURL(this, "#opt10");
+	});
+
+	// Essa parte é responsavel por fazer o preview da questão
+	$(document).ready(function() {
+		$('#prev_cont').hide();
+		$('#Preview').on('click', function(){
+			$('body').attr("style", "background-color: #343e58;");
+			$('#container').hide();
+			$('#header').hide();
+			var enunciado_p=nicEditors.findEditor("tibia").getContent();
+			$('#prev_cont').show();
+			$('#p_enunciado').html(enunciado_p);
+			if($('.tipo_alt1').is(':checked')) {
+				$('#alt_1').show();
+				$('#alt_2').hide();
+				$('#opt1').text( $('#txt1').val() );
+				$('#opt2').text( $('#txt2').val() );
+				$('#opt3').text( $('#txt3').val() );
+				$('#opt4').text( $('#txt4').val() );
+				$('#opt5').text( $('#txt5').val() );
+			} else {
+				$('#alt_1').hide();
+				$('#alt_2').show();
+				//$('#opt6').attr( "src", reader.result);
+				$('#opt7').attr(  );
+				$('#opt8').attr(  );
+				$('#opt9').attr(  );
+				$('#opt10').attr(  );
+			}
+		});
+		
+		$('#Voltar').on('click', function(){
+			$('#prev_cont').hide();
+			$('#container').show();
+			$('#header').show();
+			$('body').attr("style", "");
+		});
+	});
+	
+	// Caso mude os tipos de questão, apagar essa parte!
+	// Ela obriga que as questões de Mod sejam de dificuldade média
+	$(document).ready(function() {
+		$('#option2').on('click', function() {
+			$('#dif2').prop('checked', true);
+		});
+		$('#dif1, #dif3').on('click', function() {
+			if ($('#option2').is(':checked') === true)
+				$('#dif2').prop('checked', true);
+		});
+	});
+	
+</script>

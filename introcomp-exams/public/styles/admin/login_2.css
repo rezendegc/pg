@@ -1,0 +1,29 @@
+.wrapper
+{
+	display:block;
+	margin: 50px auto;
+	width: 450px; padding: 20px 20px 80px 20px; 
+	border: solid 10px;
+	border-color:white;
+	box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+	background-color: white;
+}
+
+h2
+{
+	text-align:center;
+}
+label
+{
+	
+	font-size: 20px;
+}
+body
+{
+	background-image:url('/images/bg_login.jpg');
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;    
+	background-color:#343e58;
+}
+

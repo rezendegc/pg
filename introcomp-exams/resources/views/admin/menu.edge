@@ -1,1 +1,43 @@
-admin menu :d
+<html>
+<head>
+	<title>Home</title>
+    
+    {{ style('styles/admin/bootstrap.min') }}
+    {{ style('styles/admin/raleway') }}
+    {{ style('styles/admin/botao') }}
+    {{ style('styles/admin/menu') }}
+
+</head>
+
+@component('components.header')
+@endcomponent
+
+<br>
+<div class="container">
+<br><br>
+
+<div class="row">			
+<div class="col-12 col-sm-6"><a href="{{ route('admin.create_schedule') }}"><div class="botao">Agendador de provas</div></a></div>
+<div class="col-12 col-sm-6"><a href="{{ route('admin.list_schedule') }}"><div class="botao">Provas agendadas</div></a></div> 
+</div>
+
+
+
+<div class="row">
+<div class="col-12 col-sm-6"><a href="{{ route('admin.create_question') }}"><div class="botao">Cria questão</div></a></div>
+<div class="col-12 col-sm-6"><a href="{{ route('admin.remove_question') }}"><div class="botao">Remove questão</div></a></div> 
+</div>
+
+<div class="row">
+<div class="col-12 col-sm-6"><a href="{{ route('admin.create_user') }}"><div class="botao">Registrar novo aluno</div></a></div>
+<div class="col-12 col-sm-6"><a href="{{ route('admin.create_teacher') }}"><div class="botao">Registrar novo professor</div></a></div> 
+</div>
+<br><br>
+<div class="row">
+<div class="col-12 col-sm-6"><a href="{{ route('student.logout') }}"><div class="botaodes botao">Deslogar</div></a></div><br>
+<div class="col-12 col-sm-6"><a href="exporta_csv.php"><div class="botaocsv botao">Baixar notas</div></a></div><br> 
+</div>
+
+</div>
+
+</html>

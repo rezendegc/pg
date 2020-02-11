@@ -1,0 +1,49 @@
+<html>
+  <head>
+    <title>Provas Agendadas</title>
+    {{ style('styles/admin/bootstrap.min') }}
+    {{ script('scripts/jquery.min') }}
+    {{ style('styles/admin/agendadas') }}
+  </head>
+  <body>
+    @component('components.header')
+    @endcomponent
+
+    <h1
+      style="text-align: center; padding-top: 30px; color:#343e58; font-family: 'Raleway', sans-serif; font-weight: bold;"
+    >
+      Futuras provas
+    </h1>
+    <br />
+    <h3 class="text-center">Selecione os horários que deseja apagar</h3>
+    <form action="#" method="POST">
+      <main class="container pt-5">
+        <table class="table table-bordered table-definition mb-5">
+          <thead class="table-info">
+            <tr>
+              <th></th>
+              <th>Data</th>
+              <th>Hora Entrada</th>
+              <th>Hora Começo</th>
+              <th>Hora Fim</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+          <tfoot>
+            <tr>
+              <th></th>
+              <th colspan="4">
+                <input
+                  type="submit"
+                  name="Desmarca"
+                  class="btn btn-primary float-right"
+                  value="Apagar"
+                />
+              </th>
+            </tr>
+          </tfoot>
+        </table>
+      </main>
+    </form>
+  </body>
+</html>

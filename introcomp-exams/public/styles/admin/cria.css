@@ -1,0 +1,93 @@
+@font-face {
+    font-family: Digital;
+    src: url(../fonts/digital.ttf);
+}
+
+/*input[type='file'] 
+{
+  display: none;
+}*/
+
+span
+{
+	margin-left: 10px;
+}
+
+label
+{
+	margin-left:3px;
+}
+label:hover
+{
+	cursor:pointer;
+}
+
+.countdown {
+	font-family:'Digital', sans-serif;
+	font-size: 50px;
+	color: silver;
+}
+
+.enunciado {
+	font-family: 'Raleway', sans-serif;
+	margin-bottom: 20px;
+	margin-top: 20px;
+	font-size: 19px;
+	color: silver;
+}
+
+.alternativas {
+	font-family: 'Raleway', sans-serif;
+	padding-left: 10px;
+}
+
+[name="alternativa_marcada"]:checked,
+[name="alternativa_marcada"]:not(:checked) {
+    position: absolute;
+    left: -9999px;
+}
+[name="alternativa_marcada"]:checked + label,
+[name="alternativa_marcada"]:not(:checked) + label
+{
+    position: relative;
+    padding-left: 24px;
+    cursor: pointer;
+    line-height: 18px;
+    display: inline-block;
+    color: silver;
+}
+[name="alternativa_marcada"]:checked + label:before,
+[name="alternativa_marcada"]:not(:checked) + label:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 14px;
+    height: 14px;
+    border: 1px solid #ddd;
+    border-radius: 100%;
+    background: #fff;
+}
+[name="alternativa_marcada"]:checked + label:after,
+[name="alternativa_marcada"]:not(:checked) + label:after {
+    content: '';
+    width: 14px;
+    height: 14px;
+    background: #00C851;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    border-radius: 100%;
+    -webkit-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+}
+[name="alternativa_marcada"]:not(:checked) + label:after {
+    opacity: 0;
+    -webkit-transform: scale(0);
+    transform: scale(0);
+}
+[name="alternativa_marcada"]:checked + label:after {
+    opacity: 1;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+}

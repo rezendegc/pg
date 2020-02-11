@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+    @component('components.header')
+    @endcomponent
+    
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Up</title>
+    {{ style('styles/admin/login_2') }}
+    {{ style('styles/admin/bootstrap.min') }}
+    
+    
+</head>
+<body>
+    <div class="wrapper">
+        <h2>Registrar novo aluno</h2><br>
+        
+        <form action="" method="post">
+        	<div class="form-group">
+                <label>Nome:<sup>*</sup></label>
+                <input type="text" name="nome"class="form-control">
+            </div>    <br>
+            <div class="form-group">
+                <label>Escola:<sup>*</sup></label>
+                <input type="text" name="escola"class="form-control">
+            </div>    <br>
+            <div class="form-group">
+                <label>Turno:<sup>*</sup></label>
+                <input type="text" name="turno"class="form-control">
+            </div>    <br>
+            <div class="form-group">
+                <label>Usuário:<sup>*</sup></label>
+                <input type="text" name="username"class="form-control">
+                <span class="help-block"></span>
+            </div>    <br>
+            <div class="form-group">
+                <label>Senha:<sup>*</sup></label>
+                <input type="password" name="password" class="form-control">
+                <span class="help-block"></span>
+            </div><br>
+            <div class="form-group">
+                <label>Confirme a senha:<sup>*</sup></label>
+                <input type="password" name="confirm_password" class="form-control">
+                <span class="help-block"></span>
+            </div>
+	<br>
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary" value="Registrar">
+                
+            </div>
+            
+        </form>
+    </div>    
+</body>
+</html>
