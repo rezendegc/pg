@@ -25,6 +25,10 @@ Route.on('/admin/schedule').render('admin/create_schedule').middleware('isAdmin'
 Route.on('/admin/schedules').render('admin/list_schedule').middleware('isAdmin').as('admin.list_schedule')
 Route.on('/admin/remove_question').render('admin/remove_question').middleware('isAdmin').as('admin.remove_question')
 Route.on('/admin/question').render('admin/create_question').middleware('isAdmin').as('admin.create_question')
+Route.on('/admin/event').render('admin/create_event').middleware('isAdmin').as('admin.create_event')
+Route.on('/admin/events').render('admin/list_events').middleware('isAdmin').as('admin.list_events')
+
+Route.post('/admin/events', 'EventController.store').as('event.create').middleware('isAdmin')
 
 Route.get('/', 'UserController.index').as('student.index').middleware('guest')
 Route.post('/login', 'UserController.login').middleware('guest').as('student.login')

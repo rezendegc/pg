@@ -17,11 +17,14 @@
 <br><br>
 
 <div class="row">			
+<div class="col-12 col-sm-6"><a href="{{ route('admin.create_event') }}"><div class="botao">Criar evento</div></a></div>
+<div class="col-12 col-sm-6"><a href="{{ route('admin.list_events') }}"><div class="botao">Ver eventos</div></a></div>
+</div>
+
+<div class="row">			
 <div class="col-12 col-sm-6"><a href="{{ route('admin.create_schedule') }}"><div class="botao">Agendador de provas</div></a></div>
 <div class="col-12 col-sm-6"><a href="{{ route('admin.list_schedule') }}"><div class="botao">Provas agendadas</div></a></div> 
 </div>
-
-
 
 <div class="row">
 <div class="col-12 col-sm-6"><a href="{{ route('admin.create_question') }}"><div class="botao">Cria questão</div></a></div>
@@ -41,3 +44,11 @@
 </div>
 
 </html>
+
+@if(flashMessage('notification'))
+
+  <script>
+    alert("{{ flashMessage('notification') }}")
+  </script>
+
+@endif

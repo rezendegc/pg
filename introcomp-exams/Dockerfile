@@ -10,6 +10,9 @@ EXPOSE ${PORT}
 ADD package.json /app
 # 6. Install dependencies
 RUN npm install
+
+RUN npm i -g @adonisjs/cli nodemon
+
 # 7. Copy the rest into directory
 COPY . /app
 # 8. Start the app inside the container

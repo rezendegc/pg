@@ -1,0 +1,94 @@
+<html>
+  <head>
+    <title>Criar evento</title>
+    {{ style('styles/admin/bootstrap.min') }}
+    {{ script('scripts/jquery.min') }}
+    {{ style('styles/admin/agenda') }}
+  </head>
+  <body>
+    
+    @component('components.header')
+    @endcomponent
+
+    <div class="container">
+      <form
+        method="POST"
+        action="{{ route('event.create') }}"
+      >
+
+        {{ csrfField() }}
+
+        <br />
+        <div class="row">
+          <div class="col-12 col-sm-4">
+            <p>Nome do Evento</p>
+            <input
+              required
+              name="name"
+              class="form-control"
+              maxlength="64"
+              type="text"
+              value="{{ old('name', 'Test') }}"
+            />
+          </div>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-12 col-sm-4">
+            <p>Início do evento (Formato dd/mm/aaaa)</p>
+            <input
+              required
+              name="start_date"
+              class="date_box form-control"
+              type="text"
+              pattern="[0-9]{2}/[0-9]{2}/[0-9]{4}"
+              placeholder="01/01/1999"
+              value="{{ old('start_date', '12/12/1997') }}"
+            />
+          </div>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-12 col-sm-4">
+            <p>Fim do evento (Formato dd/mm/aaaa)</p>
+            <input
+              required
+              name="end_date"
+              class="date_box form-control"
+              type="text"
+              placeholder="01/01/1999"
+              pattern="[0-9]{2}/[0-9]{2}/[0-9]{4}"
+              value="{{ old('end_date', '12/12/1997') }}"
+            />
+          </div>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-12 col-sm-4">
+            <p>Regras da Prova</p>
+            <textarea class="form-control" name="rules" rows="10" required></textarea>
+          </div>
+        </div>
+
+        <br /><br /><br />
+
+        <p>
+          <button class="btn btn-outline-success" id="Enviar" type="submit">
+            Criar Evento
+          </button>
+        </p>
+      </form>
+    </div>
+  </body>
+</html>
+
+@if(flashMessage('error'))
+
+  <script>
+    alert("{{ flashMessage('error') }}")
+  </script>
+
+@endif
