@@ -12,7 +12,7 @@
     <h1
       style="text-align: center; padding-top: 30px; color:#343e58; font-family: 'Raleway', sans-serif; font-weight: bold;"
     >
-      Eventos
+      Eventos Futuros
     </h1>
     <br />
     <h3 class="text-center">Selecione os eventos que deseja apagar</h3>
@@ -27,7 +27,21 @@
               <th>Data fim</th>
             </tr>
           </thead>
-          <tbody></tbody>
+          <tbody>
+            @each(event in events)
+              <tr>
+                <td>
+                  <label class="custom-control custom-checkbox">
+                    <input type="checkbox" name="delete_events[]" value="" class="custom-control-input">
+                    <span class="custom-control-indicator"></span>
+                  </label>
+                </td>
+                <td>{{ event.name }}</td>
+                <td>{{ event.start_date }}</td>
+                <td>{{ event.end_date }}</td>
+              </tr>
+            @endeach
+          </tbody>
           <tfoot>
             <tr>
               <th></th>
@@ -37,6 +51,7 @@
                   name="Desmarca"
                   class="btn btn-primary float-right"
                   value="Apagar"
+                  disabled
                 />
               </th>
             </tr>

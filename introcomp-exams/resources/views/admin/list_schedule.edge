@@ -22,13 +22,28 @@
           <thead class="table-info">
             <tr>
               <th></th>
-              <th>Data</th>
-              <th>Hora Entrada</th>
-              <th>Hora Começo</th>
-              <th>Hora Fim</th>
+              <th>Data Início</th>
+              <th>Tempo de Entrada</th>
+              <th>Data fim</th>
+              <th>Evento</th>
             </tr>
           </thead>
-          <tbody></tbody>
+          <tbody>
+            @each(schedule in schedules)
+              <tr>
+                <td>
+                  <label class="custom-control custom-checkbox">
+                    <input type="checkbox" name="delete_schedules[]" value="" class="custom-control-input">
+                    <span class="custom-control-indicator"></span>
+                  </label>
+                </td>
+                <td>{{ schedule.start_datetime }}</td>
+                <td>{{ schedule.register_time }} min</td>
+                <td>{{ schedule.end_datetime }}</td>
+                <td>{{ schedule.event.name }}</td>
+              </tr>
+            @endeach
+          </tbody>
           <tfoot>
             <tr>
               <th></th>
@@ -38,6 +53,7 @@
                   name="Desmarca"
                   class="btn btn-primary float-right"
                   value="Apagar"
+                  disabled
                 />
               </th>
             </tr>

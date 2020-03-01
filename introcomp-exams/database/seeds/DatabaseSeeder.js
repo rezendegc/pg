@@ -13,6 +13,7 @@
 /** @type {import('@adonisjs/lucid/src/Factory')} */
 const Factory = use('Factory')
 const moment = require('moment')
+const { formatDate } = require('../../utils/date')
 
 class DatabaseSeeder {
   async run() {
@@ -45,11 +46,6 @@ class DatabaseSeeder {
     await event.users().save(teacher)
     await event.exam_schedules().save(schedule)
   }
-}
-
-
-const formatDate = date => {
-  return date.toISOString().replace('T', ' ').replace('Z', '')
 }
 
 module.exports = DatabaseSeeder

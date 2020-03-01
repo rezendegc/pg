@@ -8,9 +8,10 @@ const User = use('App/Models/User')
 const Exam = use('App/Models/Exam')
 /** @type {typeof import('../../Models/Question')} */
 const Question = use('App/Models/Question')
-/** @type {typeof import('../../Models/ExamSchedule')} */
-const ExamSchedule = use('App/Models/ExamSchedule')
+/** @type {typeof import('../../Models/Event')} */
+const Event = use('App/Models/Event')
 const moment = require('moment')
+const { formatDate } = require('../../../utils/date')
 
 class UserController {
   index({ view }) {
@@ -164,13 +165,14 @@ class UserController {
 
     return response.route('student.index')
   }
+
+  async show({ view }) {
+    const events = await Event.query()
+      .where('end_date', '>', formatDate(moment()))
+      .fetch()
+
+    return view.render('admin/create_user', { events: events && events.toJSON() })
+  }
 }
 
 module.exports = UserController
-
-const formatDate = date => {
-  return date
-    .toISOString()
-    .replace('T', ' ')
-    .replace('Z', '')
-}

@@ -29,8 +29,8 @@ Factory.blueprint('App/Models/ExamSchedule', (faker, i, data) => {
 
 Factory.blueprint('App/Models/Event', (faker, i, data) => {
     return {
-        start_date: (data && data.start) || faker.date({ year: 2019, month: 6 }),
-        end_date: (data && data.end) || faker.date({ year: 2019, month: 10 }),
+        start_date: (data && data.start) || faker.date({ year: 2019, month: 1 }),
+        end_date: (data && data.end) || faker.date({ year: 2040, month: 5 }),
         name: faker.sentence(),
         rules: faker.paragraph({ sentences: 4 })
     }

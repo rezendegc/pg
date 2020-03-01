@@ -3,6 +3,7 @@
 /** @type {typeof import('../../Models/Event')} */
 const Event = use('App/Models/Event')
 const moment = require('moment')
+const { formatDate } = require('../../../utils/date')
 const dateFormat = 'DD-MM-YYYY HH:mm'
 
 class EventController {
@@ -11,9 +12,6 @@ class EventController {
 
     start_date = moment(`${start_date} 00:00`, dateFormat)
     end_date = moment(`${end_date} 23:59`, dateFormat)
-
-    console.log(end_date)
-    console.log(start_date)
 
     if (!start_date.isValid()) {
       session.flash({ error: 'Data de início inválida' })
@@ -55,13 +53,12 @@ class EventController {
     }
 
   }
+
+  async list ({ view }) {
+    const events = await Event.query().where('start_date', '>', formatDate(moment())).fetch();
+
+    return view.render('admin/list_events', { events: events && events.toJSON() })
+  }
 }
 
 module.exports = EventController
-
-const formatDate = date => {
-  return date
-    .toISOString()
-    .replace('T', ' ')
-    .replace('Z', '')
-}
