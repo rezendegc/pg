@@ -28,7 +28,7 @@
               class="date_box form-control"
               attern="[0-9]{2}/[0-9]{2}/[0-9]{4}"
               type="text"
-              value="{{ old('date', '27/12/2020') }}"
+              value="{{ old('date', '') }}"
             />
           </div>
         </div>
@@ -42,7 +42,7 @@
               class="date_time form-control"
               pattern="[0-9]{2}:[0-9]{2}"
               type="text"
-              value="{{ old('time', '20:00') }}"
+              value="{{ old('time', '') }}"
             />
           </div>
         </div>
@@ -60,7 +60,7 @@
               class="date_time form-control"
               pattern="[0-9]{2}:[0-9]{2}"
               type="text"
-              value="{{ old('duration', '01:00') }}"
+              value="{{ old('duration', '') }}"
             />
           </div>
         </div>
@@ -70,9 +70,9 @@
           <div class="form-group col-12 col-sm-4">
             <p>Evento correspondente</p>
             <select class="form-control" name="eventId" required>
-              <option disabled selected hidden>Selecione o evento correspondente</option>
+              <option disabled selected hidden  value="">Selecione o evento correspondente</option>
               @each(event in events)
-                <option value="{{ event.id }}" {{ old('eventId', '') === event.id ? 'selected' : 'selected' }}>{{ event.name }}</option>
+                <option value="{{ event.id }}" {{ old('eventId', '') === event.id ? 'selected' : '' }}>{{ event.name }}</option>
               @endeach
             </select>
           </div>

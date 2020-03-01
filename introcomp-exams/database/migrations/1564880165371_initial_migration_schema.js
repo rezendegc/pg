@@ -42,11 +42,9 @@ class InitialMigrationSchema extends Schema {
         .enu("shift", ["MORNING", "VESPERTINE", "BOTH"], {
           enumName: "StudentShifts"
         })
-        .notNullable();
       table
         .integer("event_id")
         .unsigned()
-        .notNullable()
         .references("id")
         .inTable("events");
       table.timestamps();

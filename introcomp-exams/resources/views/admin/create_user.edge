@@ -16,38 +16,47 @@
     <div class="wrapper">
         <h2>Registrar novo aluno</h2><br>
         
-        <form action="" method="post">
+        <form action="{{ route('student.create') }}" method="post">
+            {{ csrfField() }}
+
         	<div class="form-group">
-                <label>Nome:<sup>*</sup></label>
-                <input type="text" name="nome"class="form-control">
+                <label>Nome:<sup></sup></label>
+                <input type="text" name="name" class="form-control" value="{{ old('name', 'Test') }}">
             </div>    <br>
             <div class="form-group">
-                <label>Escola:<sup>*</sup></label>
-                <input type="text" name="escola"class="form-control">
+                <label>Escola:<sup></sup></label>
+                <input type="text" name="school"class="form-control" value="{{ old('school', 'Test') }}">
             </div>    <br>
             <div class="form-group">
                 <label>Turno:<sup>*</sup></label>
-                <input type="text" name="turno"class="form-control">
+                <select class="form-control" name="shift" required>
+                <option disabled hidden selected value="">Selecione o turno desejado pelo aluno</option>
+                <option value="MORNING">Matutino</option>
+                <option value="VESPERTINE">Vespertino</option>
+                <option value="BOTH">Ambos</option>
+                </select>
+            </div> <br>
+            <div class="form-group">
+                <label>CPF:<sup></sup></label>
+                <input type="text" name="cpf"class="form-control" value="{{ old('cpf', '192381923819') }}">
             </div>    <br>
             <div class="form-group">
-                <label>Usuário:<sup>*</sup></label>
-                <input type="text" name="username"class="form-control">
+                <label>Login (email):<sup>*</sup></label>
+                <input type="text" name="email"class="form-control" value="{{ old('email', 'sdadsadsa') }}" required>
                 <span class="help-block"></span>
             </div>    <br>
             <div class="form-group">
-                <label>Senha:<sup>*</sup></label>
-                <input type="password" name="password" class="form-control">
-                <span class="help-block"></span>
+                <label>Evento Correspondente:<sup>*</sup></label>
+                <select class="form-control" name="eventId" required>
+                    <option disabled selected hidden value="">Selecione o evento correspondente</option>
+                    @each(event in events)
+                    <option value="{{ event.id }}" {{ old('eventId', '') === event.id ? 'selected' : '' }}>{{ event.name }}</option>
+                    @endeach
+                </select>
             </div><br>
-            <div class="form-group">
-                <label>Confirme a senha:<sup>*</sup></label>
-                <input type="password" name="confirm_password" class="form-control">
-                <span class="help-block"></span>
-            </div>
-	<br>
+	        <br>
             <div class="form-group">
                 <input type="submit" class="btn btn-primary" value="Registrar">
-                
             </div>
             
         </form>

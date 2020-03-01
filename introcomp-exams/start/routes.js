@@ -18,12 +18,14 @@ const Route = use('Route')
 
 Route.group(() => {
     Route.on('menu').render('admin/menu').as('admin.menu')
-    Route.on('teacher').render('admin/create_teacher').as('admin.create_teacher')
     Route.on('remove_question').render('admin/remove_question').as('admin.remove_question')
     Route.on('question').render('admin/create_question').as('admin.create_question')
     
     // Users endpoints
+    Route.get('teacher', 'UserController.showTeacher').as('admin.create_teacher')
+    Route.post('teacher', 'UserController.createTeacher').as('teacher.create')
     Route.get('users', 'UserController.show').as('admin.create_user')
+    Route.post('users', 'UserController.createStudent').as('student.create')
     
     // ExamSchedule Endpoints
     Route.get('schedules', 'ExamScheduleController.list').as('admin.list_schedule')

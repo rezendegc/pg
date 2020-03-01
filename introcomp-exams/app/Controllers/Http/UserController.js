@@ -173,6 +173,67 @@ class UserController {
 
     return view.render('admin/create_user', { events: events && events.toJSON() })
   }
+
+  async showTeacher({ view }) {
+    const events = await Event.query()
+      .where('end_date', '>', formatDate(moment()))
+      .fetch()
+
+    return view.render('admin/create_teacher', { events: events && events.toJSON() })
+  }
+
+  async createStudent({ request, response, session }) {
+    const { name, school, shift, cpf, email, eventId } = request.all()
+    const eventFetched = await Event.find(eventId);
+    if (!eventFetched) {
+      session.flash({ error: 'Evento não encontrado' })
+      session.flashAll()
+
+      return response.redirect('back')
+    }
+
+    try {
+      await User.create({ name, school, shift, cpf, email, event_id: eventId })
+      session.flash({ notification: 'Aluno criado com sucesso' })
+  
+      return response.route('admin.menu')
+    } catch (e) {
+      session.flash({ error: 'Erro inesperado' })
+      session.flashAll()
+
+      return response.status(500)
+    }
+  }
+
+  async createTeacher({ request, response, session }) {
+    const { name, password, email, eventId } = request.all()
+    if (!password) {
+      session.flash({ error: 'Informe uma senha' })
+      session.flashAll()
+
+      return response.redirect('back')
+    }
+
+    const eventFetched = await Event.find(eventId);
+    if (!eventFetched) {
+      session.flash({ error: 'Evento não encontrado' })
+      session.flashAll()
+
+      return response.redirect('back')
+    }
+
+    try {
+      await User.create({ name, email, event_id: eventId, role: 'TEACHER', password })
+      session.flash({ notification: 'Professor criado com sucesso' })
+  
+      return response.route('admin.menu')
+    } catch (e) {
+      session.flash({ error: 'Erro inesperado' })
+      session.flashAll()
+
+      return response.status(500)
+    }
+  }
 }
 
 module.exports = UserController
