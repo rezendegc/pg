@@ -18,8 +18,11 @@ const Route = use('Route')
 
 Route.group(() => {
     Route.on('menu').render('admin/menu').as('admin.menu')
+
+    // Question endpoints
     Route.on('remove_question').render('admin/remove_question').as('admin.remove_question')
     Route.on('question').render('admin/create_question').as('admin.create_question')
+    Route.post('question', 'QuestionController.store').as('questions.create')
     
     // Users endpoints
     Route.get('teacher', 'UserController.showTeacher').as('admin.create_teacher')

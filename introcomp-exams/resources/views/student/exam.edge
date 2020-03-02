@@ -38,7 +38,7 @@
 
     <label class="container">
       <span id="answer1"></span>
-      <input type="radio" name="radio" value="1" id="a1" onClick="document.getElementById('abc').checked = false;">
+      <input type="radio" name="radio" value="1" id="a1">
       <span class="checkmark"></span>
     </label>
     <label class="container">
@@ -225,6 +225,7 @@ function saveAnswer(id) {
     }
     boolRadio = null;
 
+    const isImage = questions[actualQuestion].is_image
     answers = []
     answers.push(questions[actualQuestion].answer_1)
     answers.push(questions[actualQuestion].answer_2)
@@ -241,11 +242,19 @@ function saveAnswer(id) {
 
     title.innerHTML = "questão " + (actualQuestion + 1)
     description.innerHTML = questions[actualQuestion].wording
-    answer1.innerText = answers.splice(number1, 1)[0]
-    answer2.innerText = answers.splice(number2, 1)[0]
-    answer3.innerText = answers.splice(number3, 1)[0]
-    answer4.innerText = answers.splice(number4, 1)[0]
-    answer5.innerText = answers[0]
+    if (!isImage) {
+      answer1.innerHTML = answers.splice(number1, 1)[0]
+      answer2.innerHTML = answers.splice(number2, 1)[0]
+      answer3.innerHTML = answers.splice(number3, 1)[0]
+      answer4.innerHTML = answers.splice(number4, 1)[0]
+      answer5.innerHTML = answers[0]
+    } else {
+      answer1.innerHTML = '<img style="width: 150px; height: 150px" src="uploads/' + answers.splice(number1, 1)[0] + '" >'
+      answer2.innerHTML = '<img style="width: 150px; height: 150px" src="uploads/' + answers.splice(number2, 1)[0] + '" >'
+      answer3.innerHTML = '<img style="width: 150px; height: 150px" src="uploads/' + answers.splice(number3, 1)[0] + '" >'
+      answer4.innerHTML = '<img style="width: 150px; height: 150px" src="uploads/' + answers.splice(number4, 1)[0] + '" >'
+      answer5.innerHTML = '<img style="width: 150px; height: 150px" src="uploads/' + answers[0] + '" >'
+    }
 
     
     if (questions[actualQuestion].pivot.answer) {

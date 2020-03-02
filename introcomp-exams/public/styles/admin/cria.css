@@ -1,13 +1,3 @@
-@font-face {
-    font-family: Digital;
-    src: url(../fonts/digital.ttf);
-}
-
-/*input[type='file'] 
-{
-  display: none;
-}*/
-
 span
 {
 	margin-left: 10px;
@@ -20,12 +10,6 @@ label
 label:hover
 {
 	cursor:pointer;
-}
-
-.countdown {
-	font-family:'Digital', sans-serif;
-	font-size: 50px;
-	color: silver;
 }
 
 .enunciado {

@@ -35,6 +35,30 @@ class EventController {
       return response.redirect('back')
     }
 
+    const eventsResult = await Event.query()
+      .where(builder =>
+        builder
+          .where('start_date', '>=', formatDate(start_date))
+          .andWhere('start_date', '<=', formatDate(end_date))
+      )
+      .orWhere(builder =>
+        builder
+          .where('start_date', '<=', formatDate(start_date))
+          .andWhere('end_date', '>=', formatDate(start_date))
+      )
+      .fetch()
+
+    if (
+      eventsResult &&
+      eventsResult.toJSON() &&
+      eventsResult.toJSON().length > 0
+    ) {
+      session.flash({ error: 'Já existe um evento nessa data' })
+      session.flashAll()
+
+      return response.redirect('back')
+    }
+
     const event = new Event();
     event.name = name;
     event.rules = rules;

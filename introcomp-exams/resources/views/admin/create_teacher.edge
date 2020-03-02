@@ -21,16 +21,16 @@
 
         	<div class="form-group">
                 <label>Nome:<sup></sup></label>
-                <input type="text" name="name" class="form-control" value="{{ old('name', 'test') }}">
+                <input type="text" name="name" class="form-control" value="{{ old('name', '') }}">
             </div>    <br>
             <div class="form-group">
                 <label>Login (email):<sup>*</sup></label>
-                <input type="text" name="email"class="form-control" value="{{ old('email', 'test') }}" required>
+                <input type="text" name="email"class="form-control" value="{{ old('email', '') }}" required>
                 <span class="help-block"></span>
             </div>    <br>
             <div class="form-group">
                 <label>Senha:<sup>*</sup></label>
-                <input type="text" name="password"class="form-control" value="{{ old('password', 'test') }}" required>
+                <input type="text" name="password"class="form-control" value="{{ old('password', '') }}" required>
                 <span class="help-block"></span>
             </div>    <br>
             <div class="form-group">
