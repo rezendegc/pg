@@ -93,7 +93,7 @@ class ExamScheduleController {
     }
 
     try {
-      const schedule = await ExamSchedule.create({
+      await ExamSchedule.create({
         start_datetime: formatDate(start_datetime),
         end_datetime: formatDate(end_datetime),
         register_time: `00:${register_time}:00`,
@@ -120,6 +120,17 @@ class ExamScheduleController {
     })
 
     return view.render('admin/list_schedule', { schedules: schedules })
+  }
+
+  async delete({ request, response, session }) {
+    const { schedules } = request.all();
+    if (!schedules) return response.route('admin.menu')
+
+    await ExamSchedule.query().whereIn('id', schedules).delete();
+    
+    session.flash({ notification: 'Horários de prova apagadas com sucesso' })
+  
+    return response.route('admin.menu')
   }
 }
 

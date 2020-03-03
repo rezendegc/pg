@@ -78,10 +78,21 @@ class EventController {
 
   }
 
-  async list ({ view }) {
+  async list({ view }) {
     const events = await Event.query().where('start_date', '>', formatDate(moment())).fetch();
 
     return view.render('admin/list_events', { events: events && events.toJSON() })
+  }
+
+  async delete({ request, response, session }) {
+    const { events } = request.all();
+    if (!events) return response.route('admin.menu')
+
+    await Event.query().whereIn('id', events).delete();
+    
+    session.flash({ notification: 'Eventos apagados com sucesso' })
+  
+    return response.route('admin.menu')
   }
 }
 

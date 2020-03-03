@@ -34,19 +34,21 @@ Route.group(() => {
     Route.get('schedules', 'ExamScheduleController.list').as('admin.list_schedule')
     Route.get('schedule', 'ExamScheduleController.showCreate').as('admin.create_schedule')
     Route.post('schedule', 'ExamScheduleController.store').as('schedule.create')
+    Route.delete('schedules', 'ExamScheduleController.delete').as('schedule.delete')
     
     // Events Endpoints
     Route.on('event').render('admin/create_event').as('admin.create_event')
     Route.get('events', 'EventController.list').as('admin.list_events')
     Route.post('events', 'EventController.store').as('event.create')
+    Route.delete('events', 'EventController.delete').as('event.delete')
 
 }).prefix('admin').middleware(['isAdmin'])
 
-Route.get('/admin', 'UserController.adminIndex').middleware('guest').as('admin.index')
-Route.post('/admin', 'UserController.adminLogin').middleware('guest').as('admin.login')
+Route.get('/admin', 'UserController.adminIndex').middleware('isGuest').as('admin.index')
+Route.post('/admin', 'UserController.adminLogin').middleware('isGuest').as('admin.login')
 
-Route.get('/', 'UserController.index').as('student.index').middleware('guest')
-Route.post('/login', 'UserController.login').middleware('guest').as('student.login')
+Route.get('/', 'UserController.index').as('student.index').middleware('isGuest')
+Route.post('/login', 'UserController.login').middleware('isGuest').as('student.login')
 Route.get('/logout', 'UserController.logout').middleware('auth').as('student.logout')
 
 Route.get('/exam', 'ExamController.show').middleware('isStudent').as('exam.show')

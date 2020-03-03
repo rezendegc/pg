@@ -20,7 +20,7 @@ class DatabaseSeeder {
     const event = await Factory.model('App/Models/Event').create()
     const schedule = await Factory.model('App/Models/ExamSchedule').make({ start: formatDate(moment()), end: formatDate(moment().add({ day: 5 })) })
     const student = await Factory.model('App/Models/User').make({ password: '123456' })
-    const admin = await Factory.model('App/Models/User').make({ password: '123456', role: "ADMIN" })
+    const admin = await Factory.model('App/Models/User').make({ email: "admin", password: 'admin', role: "ADMIN" })
     const teacher = await Factory.model('App/Models/User').make({ password: '123456', role: "TEACHER" })
 
     await Factory.model('App/Models/Question').createMany(10, {

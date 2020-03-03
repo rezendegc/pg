@@ -23,7 +23,8 @@ class InitialMigrationSchema extends Schema {
         .unsigned()
         .notNullable()
         .references("id")
-        .inTable("events");
+        .inTable("events")
+        .onDelete('cascade');
       table.timestamps();
     });
     await this.create("users", table => {
@@ -46,7 +47,8 @@ class InitialMigrationSchema extends Schema {
         .integer("event_id")
         .unsigned()
         .references("id")
-        .inTable("events");
+        .inTable("events")
+        .onDelete('cascade');
       table.timestamps();
     });
     await this.create("exams", table => {
@@ -57,19 +59,22 @@ class InitialMigrationSchema extends Schema {
         .unsigned()
         .notNullable()
         .references("id")
-        .inTable("exam_schedules");
-      table
+        .inTable("exam_schedules")
+        .onDelete('cascade');
+        table
         .integer("event_id")
         .unsigned()
         .notNullable()
         .references("id")
-        .inTable("events");
+        .inTable("events")
+        .onDelete('cascade');
       table
         .integer("user_id")
         .unsigned()
         .notNullable()
         .references("id")
-        .inTable("users");
+        .inTable("users")
+        .onDelete('cascade');
       table
         .enu("status", ["WAITING", "DOING", "FINISHED"], {
           enumName: "UserRoles"
@@ -100,12 +105,14 @@ class InitialMigrationSchema extends Schema {
         .unsigned()
         .references("id")
         .inTable("exams")
+        .onDelete('cascade')
         .notNullable();
       table
         .integer("question_id")
         .unsigned()
         .references("id")
         .inTable("questions")
+        .onDelete('cascade')
         .notNullable();
       table.timestamps();
     });
