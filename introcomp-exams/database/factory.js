@@ -44,7 +44,7 @@ Factory.blueprint('App/Models/Exam', (faker) => {
 
 Factory.blueprint('App/Models/User', (faker, i, data) => {
     return {
-        email: (data && data.email) || faker|.email(),
+        email: (data && data.email) || faker.email(),
         password: data.password,
         school: faker.word(),
         cpf: faker.cpf(),
