@@ -10,15 +10,19 @@ class IsAdmin {
    * @param {Function} next
    */
   async handle({ response, auth }, next) {
-    const logged = await auth.check()
+    try {
+      const logged = await auth.check()
 
-    if (logged) {
-      if (auth.user.role === 'ADMIN') {
-        return response.route('admin.menu')
-      } else if (auth.user.role === 'STUDENT') {
-        return response.route('exam.show')
+      if (logged) {
+        if (auth.user.role === 'ADMIN') {
+          return response.route('admin.menu')
+        } else if (auth.user.role === 'STUDENT') {
+          return response.route('exam.show')
+        }
       }
+    } catch (e) {
     }
+    
 
     await next()
 

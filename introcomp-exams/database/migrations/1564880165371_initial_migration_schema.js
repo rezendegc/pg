@@ -95,6 +95,7 @@ class InitialMigrationSchema extends Schema {
       table.text("answer_3").notNullable();
       table.text("answer_4").notNullable();
       table.text("answer_5").notNullable();
+      table.bool("deleted").defaultTo(false);
       table.timestamps();
     });
     await this.create("exam_question", table => {

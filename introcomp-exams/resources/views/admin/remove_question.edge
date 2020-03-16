@@ -1,1 +1,66 @@
-heyha
+<html>
+  <head>
+    <title>Questões</title>
+    {{ style('styles/admin/bootstrap.min') }}
+    {{ script('scripts/jquery.min') }}
+    {{ style('styles/admin/agendadas') }}
+  </head>
+  <body>
+    @component('components.header')
+    @endcomponent
+
+    <h1
+      style="text-align: center; padding-top: 30px; color:#343e58; font-family: 'Raleway', sans-serif; font-weight: bold;"
+    >
+      Questões
+    </h1>
+    <br />
+    <h3 class="text-center">Selecione as questões que deseja deletar, ou clique em uma para editar</h3>
+    <form action="{{ route('question.delete') }}?_method=DELETE" method="POST">
+      {{ csrfField() }}
+
+      <main class="container pt-5">
+        <table class="table table-bordered table-definition mb-5">
+          <thead class="table-info">
+            <tr>
+              <th></th>
+              <th>Sumário</th>
+              <th>Dificuldade</th>
+            </tr>
+          </thead>
+          <tbody>
+            @each(question in questions)
+              <tr>
+                <td>
+                  <label class="custom-control custom-checkbox">
+                    <input type="checkbox" name="questions[]" value="{{ question.id }}" class="custom-control-input">
+                    <span class="custom-control-indicator"></span>
+                  </label>
+                </td>
+                <td>
+                    <a href="{{ route('question.edit', { id: question.id }) }}">
+                        {{ question.summary }}
+                    </a>
+                </td>
+                <td>{{ question.difficulty }}</td>
+              </tr>
+            @endeach
+          </tbody>
+          <tfoot>
+            <tr>
+              <th></th>
+              <th colspan="4">
+                <input
+                  type="submit"
+                  name="Desmarca"
+                  class="btn btn-primary float-right"
+                  value="Apagar"
+                />
+              </th>
+            </tr>
+          </tfoot>
+        </table>
+      </main>
+    </form>
+  </body>
+</html>

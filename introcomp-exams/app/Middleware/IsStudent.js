@@ -17,7 +17,7 @@ class IsStudent {
         throw new Error('Only students may access this page')
       }
     } catch (error) {
-      return response.status(401).send({ message: error.message })
+      return response.status(401).route('student.index')
     }
 
     await next()

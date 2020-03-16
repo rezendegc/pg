@@ -18,7 +18,7 @@ class IsAdmin {
         throw new Error('Need admin privileges')
       }
     } catch (error) {
-      return response.status(401).send({ message: error.message })
+      return response.status(401).route('admin.index')
     }
 
     await next()

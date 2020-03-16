@@ -20,9 +20,12 @@ Route.group(() => {
     Route.on('menu').render('admin/menu').as('admin.menu')
 
     // Question endpoints
-    Route.on('remove_question').render('admin/remove_question').as('admin.remove_question')
     Route.on('question').render('admin/create_question').as('admin.create_question')
     Route.post('question', 'QuestionController.store').as('questions.create')
+    Route.get('questions', 'QuestionController.list').as('admin.list_quests')
+    Route.delete('questions', 'QuestionController.delete').as('question.delete')
+    Route.get('questions/:id', 'QuestionController.showEdit').as('question.edit')
+    Route.put('questions/:id', 'QuestionController.edit').as('question.put')
     
     // Users endpoints
     Route.get('teacher', 'UserController.showTeacher').as('admin.create_teacher')

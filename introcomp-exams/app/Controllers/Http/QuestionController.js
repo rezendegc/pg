@@ -61,6 +61,54 @@ class QuestionController {
       return response.status(500)
     }
   }
+
+  async list({ view }) {
+    const questions = await Question.query().where({ deleted: false }).fetch();
+
+    return view.render('admin/remove_question', { questions: questions && questions.toJSON() })
+  }
+
+  async delete({ request, response, session }) {
+    const { questions } = request.all();
+    if (!questions) return response.route('admin.menu')
+
+    await Question.query().whereIn('id', questions).update({ deleted: true })
+    
+    session.flash({ notification: 'Questões apagadas com sucesso' })
+  
+    return response.route('admin.menu')
+  }
+
+  async showEdit({ view, params }) {
+    const { id } = params;
+    const question = await Question.find(id);
+
+    return view.render('admin/edit_question', { question: question && question.toJSON() })
+  }
+
+  async edit({ request, response, params, session }) {
+    const { id } = params;
+    const { resumo, enunciado, alt, dificuldade } = request.all();
+
+    const question = await Question.find(id);
+
+    question.merge({
+      summary: resumo,
+      wording: enunciado,
+      difficulty: dificuldade,
+      answer_1: alt[0],
+      answer_2: alt[1],
+      answer_3: alt[2],
+      answer_4: alt[3],
+      answer_5: alt[4],
+    })
+
+    await question.save();
+
+    session.flash({ notification: 'Questão atualizada com sucesso' })
+  
+    return response.route('admin.menu')
+  }
 }
 
 module.exports = QuestionController
