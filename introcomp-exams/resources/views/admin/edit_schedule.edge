@@ -1,0 +1,139 @@
+<html>
+  <head>
+    <title>Agendador de prova</title>
+    {{ style('styles/admin/bootstrap.min') }}
+    {{ script('scripts/jquery.min') }}
+    {{ style('styles/admin/agenda') }}
+  </head>
+  <body>
+    
+    @component('components.header')
+    @endcomponent
+
+    <div class="container">
+      <form
+        method="POST"
+        action="{{ role === 'TEACHER' ? route('teacher.schedule.edit', { id: schedule.id }) : route('schedule.edit', { id: schedule.id }) }}?_method=PUT"
+      >
+
+      {{ csrfField() }}
+
+        <br />
+        <div class="row">
+          <div class="col-12 col-sm-4">
+            <p>Data da prova (Formato dd/mm/aaaa)</p>
+            <input
+              required
+              name="date"
+              class="date_box form-control"
+              attern="[0-9]{2}/[0-9]{2}/[0-9]{4}"
+              type="text"
+              value="{{ schedule.date }}"
+            />
+          </div>
+        </div>
+        <br />
+        <div class="row">
+          <div class="col-12 col-sm-4">
+            <p>Hora de entrada (Formato hh:mm)</p>
+            <input
+              required
+              name="time"
+              class="date_time form-control"
+              pattern="[0-9]{2}:[0-9]{2}"
+              type="text"
+              value="{{ schedule.start_time }}"
+            />
+          </div>
+        </div>
+        <br />
+        <div class="row">
+          <div class="col-12 col-sm-4">
+            <p style="margin-bottom: 0px;">Duração da prova (Formato hh:mm)</p>
+            <span
+              style="font-size: 12px; margin-bottom: 10px; display: inline-block;"
+              >Este tempo já inclui o tempo até começar a prova</span
+            >
+            <input
+              required
+              name="duration"
+              class="date_time form-control"
+              pattern="[0-9]{2}:[0-9]{2}"
+              type="text"
+              value="{{ schedule.duration }}"
+            />
+          </div>
+        </div>
+        <br />
+        <br />
+        
+        <p>Tempo até começar a prova (em minutos)</p>
+        <div class="quantity">
+          <input
+            required
+            name="register_time"
+            class="date_time"
+            type="number"
+            min="10"
+            max="59"
+            value="{{ schedule.register_time }}"
+          />
+        </div>
+
+        
+
+        <br /><br /><br />
+
+        <p>
+          <button class="btn btn-outline-success" id="Enviar" type="submit">
+            Editar
+          </button>
+        </p>
+      </form>
+    </div>
+
+    <script>
+      jQuery(
+        '<div class="quantity-nav"><div class="quantity-button quantity-up">+</div><div class="quantity-button quantity-down">-</div></div>'
+      ).insertAfter('.quantity input')
+      jQuery('.quantity').each(function() {
+        var spinner = jQuery(this),
+          input = spinner.find('input[type="number"]'),
+          btnUp = spinner.find('.quantity-up'),
+          btnDown = spinner.find('.quantity-down'),
+          min = input.attr('min'),
+          max = input.attr('max')
+
+        btnUp.click(function() {
+          var oldValue = parseFloat(input.val())
+          if (oldValue >= max) {
+            var newVal = oldValue
+          } else {
+            var newVal = oldValue + 1
+          }
+          spinner.find('input').val(newVal)
+          spinner.find('input').trigger('change')
+        })
+
+        btnDown.click(function() {
+          var oldValue = parseFloat(input.val())
+          if (oldValue <= min) {
+            var newVal = oldValue
+          } else {
+            var newVal = oldValue - 1
+          }
+          spinner.find('input').val(newVal)
+          spinner.find('input').trigger('change')
+        })
+      })
+    </script>
+  </body>
+</html>
+
+@if(flashMessage('error'))
+
+  <script>
+    alert("{{ flashMessage('error') }}")
+  </script>
+
+@endif

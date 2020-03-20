@@ -22,6 +22,10 @@ class UserController {
     return view.render('admin/login')
   }
 
+  teacherIndex({ view }) {
+    return view.render('teacher/login')
+  }
+
   async login({ request, auth, session, response }) {
     const { email } = request.all()
     await auth.logout()
@@ -37,6 +41,7 @@ class UserController {
       .first()
 
     const userJSON = user && user.toJSON()
+
     if (userJSON && userJSON.exam && userJSON.exam.status) {
       if (userJSON.exam.status === 'FINISHED') {
         session.flashExcept(['email'])
@@ -148,6 +153,13 @@ class UserController {
 
     try {
       await auth.attempt(email, password)
+      if (auth.user.role !== "ADMIN") {
+        await auth.logout();
+
+        session.flash({ error: 'O usuário deve ser um admin!' })
+
+        return response.route('admin.index')
+      }
     } catch (e) {
       console.debug(e)
 
@@ -160,18 +172,43 @@ class UserController {
     return response.route('admin.menu')
   }
 
+  async teacherLogin({ request, auth, session, response }) {
+    const { email, password } = request.all()
+    await auth.logout()
+
+    try {
+      await auth.attempt(email, password);
+      if (auth.user.role !== "TEACHER") {
+        await auth.logout();
+
+        session.flash({ error: 'O usuário deve ser um professor!' })
+
+        return response.route('teacher.index')
+      }
+    } catch (e) {
+      console.debug(e)
+
+      session.flashExcept(['invalidLogin'])
+      session.flash({ error: 'E-mail ou senha inválidos!' })
+
+      return response.route('teacher.index')
+    }
+
+    return response.route('teacher.menu')
+  }
+
   async logout({ auth, response }) {
     await auth.logout()
 
     return response.route('student.index')
   }
 
-  async show({ view }) {
+  async show({ view, auth }) {
     const events = await Event.query()
       .where('end_date', '>', formatDate(moment()))
       .fetch()
 
-    return view.render('admin/create_user', { events: events && events.toJSON() })
+    return view.render('admin/create_user', { events: events && events.toJSON(), role: auth.user.role })
   }
 
   async showTeacher({ view }) {
@@ -182,7 +219,7 @@ class UserController {
     return view.render('admin/create_teacher', { events: events && events.toJSON() })
   }
 
-  async createStudent({ request, response, session }) {
+  async createStudent({ request, response, session, auth }) {
     const { name, school, shift, cpf, email, eventId } = request.all()
     const eventFetched = await Event.find(eventId);
     if (!eventFetched) {
@@ -196,7 +233,7 @@ class UserController {
       await User.create({ name, school, shift, cpf, email, event_id: eventId })
       session.flash({ notification: 'Aluno criado com sucesso' })
   
-      return response.route('admin.menu')
+      return auth.user.role === 'TEACHER' ? response.route('teacher.menu') : response.route('admin.menu')
     } catch (e) {
       session.flash({ error: 'Erro inesperado' })
       session.flashAll()

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Introcomp Exams</title>
+  {{ script('icons/feather.min') }}
+  {{ style('styles/admin/login') }}
+</head>
+<body>
+  <div class="circle"></div>
+  <div class="introcomp-logo"></div>
+  <div class="ufes-logo"></div>
+  <div class="pet-logo"></div>
+  <div class="welcome">bem vindo</div>
+  <form action="{{ route('teacher.login') }}" method="post" >
+    {{ csrfField() }}
+
+    <div class="login-form">
+      <div class="login-title">
+        login
+      </div>
+      <div class="input-container">
+        @if(flashMessage('error'))
+          <div role="alert" style="margin-top: -38px;">
+            <strong>Ops! Algo deu errado.</strong>
+            <br/>
+            {{ flashMessage('error') }}
+          </div>
+        @endif
+        <i data-feather="mail" class='icon-form'></i>
+        <input type="text" placeholder="e-mail" class="no-border input-text" name="email">
+      </div>
+      <div class="input-container mt">
+        <i data-feather="lock" class='icon-form'></i>
+        <input type="password" placeholder="senha" class="no-border input-text" name="password">
+      </div>
+      <div class="login-button-container">
+        <input type="submit" class="button-login" value="entrar">
+      </div>
+    </div>
+  </form>
+</body>
+</html>
+
+<script>
+  feather.replace()
+</script>

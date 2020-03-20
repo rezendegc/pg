@@ -32,17 +32,25 @@
           </thead>
           <tbody>
             @each(schedule in schedules)
-              <tr>
+              <tr class="styledtr">
                 <td>
                   <label class="custom-control custom-checkbox">
                     <input type="checkbox" name="schedules[]" value="{{ schedule.id }}" class="custom-control-input">
                     <span class="custom-control-indicator"></span>
                   </label>
                 </td>
-                <td>{{ schedule.start_datetime }}</td>
-                <td>{{ schedule.register_time }} min</td>
-                <td>{{ schedule.end_datetime }}</td>
-                <td>{{ schedule.event.name }}</td>
+                <td onclick="window.location='{{ role === 'ADMIN' ? route('schedule.showEdit', { id: schedule.id }) : route('teacher.schedule.showEdit', { id: schedule.id }) }}'" class="styledtd">
+                  {{ schedule.start_datetime }}
+                </td>
+                <td onclick="window.location='{{ role === 'ADMIN' ? route('schedule.showEdit', { id: schedule.id }) : route('teacher.schedule.showEdit', { id: schedule.id }) }}'" class="styledtd">
+                  {{ schedule.register_time }} min
+                </td>
+                <td onclick="window.location='{{ role === 'ADMIN' ? route('schedule.showEdit', { id: schedule.id }) : route('teacher.schedule.showEdit', { id: schedule.id }) }}'" class="styledtd">
+                  {{ schedule.end_datetime }}
+                </td>
+                <td onclick="window.location='{{ role === 'ADMIN' ? route('schedule.showEdit', { id: schedule.id }) : route('teacher.schedule.showEdit', { id: schedule.id }) }}'" class="styledtd">
+                  {{ schedule.event.name }}
+                </td>
               </tr>
             @endeach
           </tbody>

@@ -10,24 +10,18 @@ class IsAdmin {
    * @param {Function} next
    */
   async handle({ response, auth }, next) {
-    try {
-      const logged = await auth.check()
 
-      if (logged) {
-        if (auth.user.role === 'ADMIN') {
-          return response.route('admin.menu')
-        } else if (auth.user.role === 'STUDENT') {
-          console.log('lul');
-          
-          return response.route('exam.show')
-        }
+    try {
+      await auth.check()
+
+      if (auth.user.role !== 'TEACHER') {
+        throw new Error('Need teacher privileges')
       }
-    } catch (e) {
+    } catch (error) {
+      return response.status(401).route('teacher.index')
     }
-    
 
     await next()
-
   }
 }
 

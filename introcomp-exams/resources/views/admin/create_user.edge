@@ -16,7 +16,7 @@
     <div class="wrapper">
         <h2>Registrar novo aluno</h2><br>
         
-        <form action="{{ route('student.create') }}" method="post">
+        <form action="{{ role === 'TEACHER' ? route('teacher.student.create') : route('student.create') }}" method="post">
             {{ csrfField() }}
 
         	<div class="form-group">
