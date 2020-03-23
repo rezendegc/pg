@@ -1,0 +1,60 @@
+<html>
+  <head>
+    <title>Provas Agendadas</title>
+    {{ style('styles/admin/bootstrap.min') }}
+    {{ script('scripts/jquery.min') }}
+    {{ style('styles/admin/agendadas') }}
+  </head>
+  <body>
+    @component('components.header')
+    @endcomponent
+
+    <h1
+      style="text-align: center; padding-top: 30px; color:#343e58; font-family: 'Raleway', sans-serif; font-weight: bold;"
+    >
+      Futuras provas
+    </h1>
+    <br />
+    <h3 class="text-center">Selecione os horários que deseja apagar</h3>
+    <form action="{{ route('schedule.delete') }}?_method=DELETE" method="POST">
+      {{ csrfField() }}
+
+      <main class="container pt-5">
+        <table class="table table-bordered table-definition mb-5">
+          <thead class="table-info">
+            <tr>
+              <th style="display: none;"></th>
+              <th>Nome</th>
+              <th>Email</th>
+              <th>Cpf</th>
+              <th>Nota</th>
+              <th>Evento</th>
+            </tr>
+          </thead>
+          <tbody>
+            @each(user in users)
+              <tr class="styledtr">
+                <td style="display: none;"></td>
+                <td onclick="window.location='{{ route('schedule.showEdit', { id: 'a' }) }}'" class="styledtd">
+                  {{ user.name }}
+                </td>
+                <td onclick="window.location='{{ route('schedule.showEdit', { id: 'a' }) }}'" class="styledtd">
+                  {{ user.email }}
+                </td>
+                <td onclick="window.location='{{ route('schedule.showEdit', { id: 'a' }) }}'" class="styledtd">
+                  {{ user.cpf }}
+                </td>
+                <td onclick="window.location='{{ route('schedule.showEdit', { id: 'a' }) }}'" class="styledtd">
+                  {{ user.exam.grade }}
+                </td>
+                <td onclick="window.location='{{ route('schedule.showEdit', { id: 'a' }) }}'" class="styledtd">
+                  {{ user.event.name }}
+                </td>
+              </tr>
+            @endeach
+          </tbody>
+        </table>
+      </main>
+    </form>
+  </body>
+</html>

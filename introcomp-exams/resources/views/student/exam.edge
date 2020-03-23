@@ -91,15 +91,11 @@ function saveAnswer(id) {
     else if (questions[actualQuestion].answer_3 === answerText) answer = "3"
     else if (questions[actualQuestion].answer_4 === answerText) answer = "4"
     else if (questions[actualQuestion].answer_5 === answerText) answer = "5"
+    console.log(answerText);
   }
 
+
   var xhttp = new XMLHttpRequest();
-  // xhttp.onreadystatechange = function() {
-  //   if (this.readyState == 4 && this.status == 200) {
-  //   //  document.getElementById("demo").innerHTML = this.responseText;
-  //     console.log("yay"); 
-  //   }
-  // };
   xhttp.open("POST", "/examquestion/" + questions[id].id, true);
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhttp.setRequestHeader("x-csrf-token", document.getElementsByName("_csrf")[0].value);

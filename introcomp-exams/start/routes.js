@@ -46,7 +46,9 @@ Route.group(() => {
     Route.get('events', 'EventController.list').as('admin.list_events')
     Route.post('events', 'EventController.store').as('event.create')
     Route.delete('events', 'EventController.delete').as('event.delete')
-
+    
+    // See ended exam
+    Route.get('exams', 'ExamController.list').as('admin.exams')
 }).prefix('admin').middleware(['isAdmin'])
 
 Route.group(() => {

@@ -1,5 +1,9 @@
 'use strict'
 
+/** @type {typeof import('../../Models/User')} */
+const User = use('App/Models/User')
+/** @type {typeof import('../../Models/Exam')} */
+const Exam = use('App/Models/Exam')
 const moment = require('moment')
 
 class ExamController {
@@ -34,7 +38,12 @@ class ExamController {
     }
 
     if (exam.status === 'DOING') {
-      return view.render('student/exam', { schedule, questions: questions.toJSON(), seed: auth.user.id, rules: event.rules })
+      return view.render('student/exam', {
+        schedule,
+        questions: questions.toJSON(),
+        seed: auth.user.id,
+        rules: event.rules
+      })
     } else {
       return response.route('student.logout')
     }
@@ -50,22 +59,55 @@ class ExamController {
     } else if (exam.status === 'FINISHED') {
       return response.route('exam.finished')
     } else {
-      return view.render('student/waiting', { schedule: schedule.toJSON(), rules: event.rules })
+      return view.render('student/waiting', {
+        schedule: schedule.toJSON(),
+        rules: event.rules
+      })
     }
-
   }
 
   async finished({ view, auth }) {
-    const exam = await auth.user.exam().first()
+    const exam = await auth.user.exam().with('questions').first()
 
     if (exam.status !== 'FINISHED') {
-      exam.status = 'FINISHED'
+      let grade = 0;
+      const wrongValue = Number(process.env.WRONG_ANSWER_VALUE);
+      const correctValue = Number(process.env.RIGHT_ANSWER_VALUE);
+      const examJSON = exam.toJSON();
+
+      examJSON.questions.forEach(e => {
+        console.log(grade);
+        console.log(e.pivot.answer);
+        
+        
+
+        if (e.pivot.answer == '1') {
+          grade += correctValue;
+        } else if (e.pivot.answer != null) {
+          grade += wrongValue
+        }
+      });
+
+      exam.grade = grade;
+      exam.status = 'FINISHED';
+
       await exam.save()
     }
 
     await auth.logout()
 
     return view.render('student/finished')
+  }
+
+  async list({ view }) {
+    const users = await User.query().has('exam').with('event')
+      .with('exam', builder => {
+        builder.where({ status: 'FINISHED' })
+      })
+      .andWhere({ role: 'STUDENT' })
+      .fetch()
+
+    return view.render('admin/list_exams', { users: users && users.toJSON() })
   }
 }
 
