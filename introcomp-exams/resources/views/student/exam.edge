@@ -16,9 +16,9 @@
     
     @each(question in questions)
       @if(question.pivot.answer)
-        <div class="circle-checked" id="circle{{$loop.index}}" onClick="jumpToQuestion({{$loop.index}})"></div>
+        <div class="circle-checked" id="circle{{$loop.index}}" onClick="jumpToQuestion({{$loop.index}})">{{$loop.index+1}}</div>
       @else
-        <div class="circle-unchecked" id="circle{{$loop.index}}" onClick="jumpToQuestion({{$loop.index}})"></div>
+        <div class="circle-unchecked" id="circle{{$loop.index}}" onClick="jumpToQuestion({{$loop.index}})">{{$loop.index+1}}</div>
       @endif
     @endeach
   

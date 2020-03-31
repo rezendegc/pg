@@ -49,6 +49,7 @@ Route.group(() => {
     
     // See ended exam
     Route.get('exams', 'ExamController.list').as('admin.exams')
+    Route.get('exam/:id', 'ExamController.viewEnded').as('admin.exam')
 }).prefix('admin').middleware(['isAdmin'])
 
 Route.group(() => {

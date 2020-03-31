@@ -79,8 +79,6 @@ class ExamController {
         console.log(grade);
         console.log(e.pivot.answer);
         
-        
-
         if (e.pivot.answer == '1') {
           grade += correctValue;
         } else if (e.pivot.answer != null) {
@@ -108,6 +106,16 @@ class ExamController {
       .fetch()
 
     return view.render('admin/list_exams', { users: users && users.toJSON() })
+  }
+
+  async viewEnded({ view, params, response }) {
+    const { id } = params;
+    const user = await User.query().with('exam', builder => builder.with('questions')).where({ id }).first();
+
+    return view.render('admin/finished_exam', {
+      seed: user.id,
+      questions: user.toJSON().exam.questions
+    });
   }
 }
 

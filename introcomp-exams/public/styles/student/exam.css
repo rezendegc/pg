@@ -28,6 +28,9 @@ body {
 }
 
 .circle-checked {
+  color: white;
+  line-height: 35px;
+  text-align: center;
   width: 35px;
   height: 35px;
   border-radius: 50%;
@@ -36,6 +39,9 @@ body {
 }
 
 .circle-unchecked {
+  color: black;
+  line-height: 35px;
+  text-align: center;
   width: 35px;
   height: 35px;
   border-radius: 50%;
@@ -311,4 +317,10 @@ body {
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
   transform: rotate(45deg); 
+}
+
+.correctAnswer {
+  background-color: #32CD3277;
+  border-radius: 15px;
+  padding: 0 10px;
 }

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Introcomp Exams</title>
+  {{ script('icons/feather.min') }}
+  {{ script('scripts/moment.min') }}
+  {{ style('styles/student/exam') }}
+</head>
+<body>
+  <div class="header">
+    <a class="timer" href="{{ route('admin.exams') }}">
+      <i data-feather="chevron-left" class='clock-icon'></i>
+      <span class="text" id="countdown">Voltar</span>
+    </a>
+    
+    @each(question in questions)
+      @if(question.pivot.answer)
+        <div class="circle-checked" id="circle{{$loop.index}}">{{$loop.index+1}}</div>
+      @else
+        <div class="circle-unchecked" id="circle{{$loop.index}}">{{$loop.index+1}}</div>
+      @endif
+    @endeach
+
+  </div>
+
+  @each(question in questions)
+    <div class="exam-body">
+      <p class="title" id="title">questão {{$loop.index+1}}</p>
+      <br>
+      <p class="description" id="description">{{question.wording}}</p>
+
+      <label class="container">
+        <span id="answer1_{{$loop.index}}"></span>
+        <input type="radio" name="radio_{{$loop.index}}" value="1_{{$loop.index}}" disabled>
+        <span class="checkmark"></span>
+      </label>
+      <label class="container">
+        <span id="answer2_{{$loop.index}}"></span>
+        <input type="radio" name="radio_{{$loop.index}}" value="2_{{$loop.index}}" disabled>
+        <span class="checkmark"></span>
+      </label>
+      <label class="container">
+        <span id="answer3_{{$loop.index}}"></span>
+        <input type="radio" name="radio_{{$loop.index}}" value="3_{{$loop.index}}" disabled>
+        <span class="checkmark"></span>
+      </label>
+      <label class="container">
+        <span id="answer4_{{$loop.index}}"></span>
+        <input type="radio" name="radio_{{$loop.index}}" value="4_{{$loop.index}}" disabled>
+        <span class="checkmark"></span>
+      </label>
+      <label class="container">
+        <span id="answer5_{{$loop.index}}"></span>
+        <input type="radio" name="radio_{{$loop.index}}" value="5_{{$loop.index}}" disabled>
+        <span class="checkmark"></span>
+      </label>
+
+      <div style="margin: 100px;"></div>
+    </div>
+  @endeach
+</body>
+</html>
+
+
+<script>
+  let questions = {{{ toJSON(questions) }}}
+  let answers = []
+
+  questions.forEach((question, index) => {
+    if (question.pivot.answer) {
+      document.getElementById('circle' + index).className = "circle-checked"
+    }
+
+    updateQuestion(index)
+  })
+
+  function updateQuestion(actualQuestion) {
+    let answer1 = document.getElementById("answer1_" + actualQuestion) 
+    let answer2 = document.getElementById("answer2_" + actualQuestion) 
+    let answer3 = document.getElementById("answer3_" + actualQuestion) 
+    let answer4 = document.getElementById("answer4_" + actualQuestion) 
+    let answer5 = document.getElementById("answer5_" + actualQuestion) 
+    let selectedAnswer = document.querySelector('input[name="radio"]:checked')
+
+    const isImage = questions[actualQuestion].is_image
+    const correctAnswer = questions[actualQuestion].answer_1
+    answers = []
+    answers.push(questions[actualQuestion].answer_1)
+    answers.push(questions[actualQuestion].answer_2)
+    answers.push(questions[actualQuestion].answer_3)
+    answers.push(questions[actualQuestion].answer_4)
+    answers.push(questions[actualQuestion].answer_5)
+
+    let seed = ({{{ seed }}} + questions[actualQuestion].summary.length) * questions[actualQuestion].wording.length
+
+    const number1 = Math.floor((Math.abs(Math.sin(seed)*{{{ seed }}}*99 % 4.99)))
+    const number2 = Math.floor((Math.abs(Math.sin(seed)*{{{ seed }}}*99 % 3.99)))
+    const number3 = Math.floor((Math.abs(Math.sin(seed)*{{{ seed }}}*99 % 2.99)))
+    const number4 = Math.floor((Math.abs(Math.sin(seed)*{{{ seed }}}*99 % 1.99)))   
+
+    if (!isImage) {
+      answer1.innerHTML = answers.splice(number1, 1)[0]
+      answer2.innerHTML = answers.splice(number2, 1)[0]
+      answer3.innerHTML = answers.splice(number3, 1)[0]
+      answer4.innerHTML = answers.splice(number4, 1)[0]
+      answer5.innerHTML = answers[0]
+    } else {
+      answer1.innerHTML = '<img style="width: 150px; height: 150px" src="uploads/' + answers.splice(number1, 1)[0] + '" >'
+      answer2.innerHTML = '<img style="width: 150px; height: 150px" src="uploads/' + answers.splice(number2, 1)[0] + '" >'
+      answer3.innerHTML = '<img style="width: 150px; height: 150px" src="uploads/' + answers.splice(number3, 1)[0] + '" >'
+      answer4.innerHTML = '<img style="width: 150px; height: 150px" src="uploads/' + answers.splice(number4, 1)[0] + '" >'
+      answer5.innerHTML = '<img style="width: 150px; height: 150px" src="uploads/' + answers[0] + '" >'
+    }
+
+    
+    if (questions[actualQuestion].pivot.answer) {
+      let markedAnswer = questions[actualQuestion].pivot.answer
+
+      if (markedAnswer == 1) markedAnswer = questions[actualQuestion].answer_1
+      if (markedAnswer == 2) markedAnswer = questions[actualQuestion].answer_2
+      if (markedAnswer == 3) markedAnswer = questions[actualQuestion].answer_3
+      if (markedAnswer == 4) markedAnswer = questions[actualQuestion].answer_4
+      if (markedAnswer == 5) markedAnswer = questions[actualQuestion].answer_5
+
+      if (answer1.innerText == markedAnswer) {
+        let input = document.querySelector('input[name="radio_'+ actualQuestion +'"][value="1_'+ actualQuestion +'"]')
+        console.log(input)
+        input.checked = true
+      } else if (answer2.innerText == markedAnswer) {
+        let input = document.querySelector('input[name="radio_'+ actualQuestion +'"][value="2_'+ actualQuestion +'"]')
+        input.checked = true
+      } else if (answer3.innerText == markedAnswer) {
+        let input = document.querySelector('input[name="radio_'+ actualQuestion +'"][value="3_'+ actualQuestion +'"]')
+        input.checked = true
+      } else if (answer4.innerText == markedAnswer) {
+        let input = document.querySelector('input[name="radio_'+ actualQuestion +'"][value="4_'+ actualQuestion +'"]')
+        input.checked = true
+      } else if (answer5.innerText == markedAnswer) {
+        let input = document.querySelector('input[name="radio_'+ actualQuestion +'"][value="5_'+ actualQuestion +'"]')
+        input.checked = true
+      }
+
+      if (answer1.innerText == correctAnswer) {
+        answer1.classList.add('correctAnswer')
+      } else if (answer2.innerText == correctAnswer) {
+        answer2.classList.add('correctAnswer')
+      } else if (answer3.innerText == correctAnswer) {
+        answer3.classList.add('correctAnswer')
+      } else if (answer4.innerText == correctAnswer) {
+        answer4.classList.add('correctAnswer')
+      } else if (answer5.innerText == correctAnswer) {
+        answer5.classList.add('correctAnswer')
+      }
+    }
+  }
+
+  feather.replace();
+</script>

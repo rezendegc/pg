@@ -12,49 +12,74 @@
     <h1
       style="text-align: center; padding-top: 30px; color:#343e58; font-family: 'Raleway', sans-serif; font-weight: bold;"
     >
-      Futuras provas
+      Provas concluídas
     </h1>
     <br />
-    <h3 class="text-center">Selecione os horários que deseja apagar</h3>
-    <form action="{{ route('schedule.delete') }}?_method=DELETE" method="POST">
-      {{ csrfField() }}
-
-      <main class="container pt-5">
-        <table class="table table-bordered table-definition mb-5">
-          <thead class="table-info">
-            <tr>
-              <th style="display: none;"></th>
-              <th>Nome</th>
-              <th>Email</th>
-              <th>Cpf</th>
-              <th>Nota</th>
-              <th>Evento</th>
+    <h3 class="text-center">Selecione o aluno que deseja ver</h3>
+    <div class="row">
+      <div class="col-4 offset-4">
+        <input type="text" class="form-control" onkeyup="filter(this)" placeholder="Pesquise aqui para filtrar por qualquer campo"/>
+      </div>
+    </div>
+    <main class="container pt-5">
+      <table class="table table-bordered table-definition mb-5" id="users">
+        <thead class="table-info">
+          <tr>
+            <th style="display: none;"></th>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Cpf</th>
+            <th>Nota</th>
+            <th>Evento</th>
+          </tr>
+        </thead>
+        <tbody>
+          @each(user in users)
+            <tr class="styledtr">
+              <td style="display: none;"></td>
+              <td onclick="window.location='{{ route('admin.exam', { id: user.id }) }}'" class="styledtd">
+                {{ user.name }}
+              </td>
+              <td onclick="window.location='{{ route('admin.exam', { id: user.id }) }}'" class="styledtd">
+                {{ user.email }}
+              </td>
+              <td onclick="window.location='{{ route('admin.exam', { id: user.id }) }}'" class="styledtd">
+                {{ user.cpf }}
+              </td>
+              <td onclick="window.location='{{ route('admin.exam', { id: user.id }) }}'" class="styledtd">
+                {{ user.exam.grade }}
+              </td>
+              <td onclick="window.location='{{ route('admin.exam', { id: user.id }) }}'" class="styledtd">
+                {{ user.event.name }}
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            @each(user in users)
-              <tr class="styledtr">
-                <td style="display: none;"></td>
-                <td onclick="window.location='{{ route('schedule.showEdit', { id: 'a' }) }}'" class="styledtd">
-                  {{ user.name }}
-                </td>
-                <td onclick="window.location='{{ route('schedule.showEdit', { id: 'a' }) }}'" class="styledtd">
-                  {{ user.email }}
-                </td>
-                <td onclick="window.location='{{ route('schedule.showEdit', { id: 'a' }) }}'" class="styledtd">
-                  {{ user.cpf }}
-                </td>
-                <td onclick="window.location='{{ route('schedule.showEdit', { id: 'a' }) }}'" class="styledtd">
-                  {{ user.exam.grade }}
-                </td>
-                <td onclick="window.location='{{ route('schedule.showEdit', { id: 'a' }) }}'" class="styledtd">
-                  {{ user.event.name }}
-                </td>
-              </tr>
-            @endeach
-          </tbody>
-        </table>
-      </main>
-    </form>
+          @endeach
+        </tbody>
+      </table>
+    </main>
   </body>
 </html>
+
+<script>
+  const filter = el => {
+    let input, filter, table, tr, td, cell, i, j;
+    filter = el.value.toUpperCase();
+    table = document.getElementById("users");
+    tr = table.getElementsByTagName("tr");
+    for (i = 1; i < tr.length; i++) {
+      // Hide the row initially.
+      tr[i].style.display = "none";
+    
+      td = tr[i].getElementsByTagName("td");
+      for (j = 0; j < td.length; j++) {
+        cell = tr[i].getElementsByTagName("td")[j];
+        if (cell) {
+          if (cell.innerHTML.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+            break;
+          } 
+        }
+      }
+    }
+  }
+</script>
