@@ -8,7 +8,7 @@ const dateFormat = 'DD-MM-YYYY HH:mm'
 
 class EventController {
   async store({ request, response, session }) {
-    let { name, rules, start_date, end_date } = request.all()
+    let { name, rules, start_date, end_date, amount_easy, amount_medium, amount_hard, amount_special } = request.all()
 
     start_date = moment(`${start_date} 00:00`, dateFormat)
     end_date = moment(`${end_date} 23:59`, dateFormat)
@@ -40,7 +40,11 @@ class EventController {
     event.rules = rules;
     event.start_date = formatDate(start_date);
     event.end_date = formatDate(end_date);
-
+    event.amount_easy = amount_easy;
+    event.amount_medium = amount_medium;
+    event.amount_hard = amount_hard;
+    event.amount_special = amount_special;
+    
     try {
       await event.save()
       session.flash({ notification: 'Evento criado com sucesso' })

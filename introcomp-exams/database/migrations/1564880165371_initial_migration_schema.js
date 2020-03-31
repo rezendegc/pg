@@ -11,6 +11,10 @@ class InitialMigrationSchema extends Schema {
       table.datetime("end_date").notNullable();
       table.string("name").notNullable();
       table.text('rules').notNullable();
+      table.integer("amount_easy").defaultTo(5).notNullable();
+      table.integer("amount_medium").defaultTo(5).notNullable();
+      table.integer("amount_hard").defaultTo(4).notNullable();
+      table.integer("amount_special").defaultTo(1).notNullable();
       table.timestamps();
     });
     await this.create("exam_schedules", table => {

@@ -91,10 +91,10 @@ class UserController {
       exam.user_id = user.id
       await exam.event().associate(event)
 
-      const amountEasy = Env.get('EASY_QUESTIONS', 5)
-      const amountMedium = Env.get('MEDIUM_QUESTIONS', 5)
-      const amountHard = Env.get('HARD_QUESTIONS', 4)
-      const amountSpecial = Env.get('SPECIAL_QUESTIONS', 1)
+      const amountEasy = event.toJSON().amount_easy
+      const amountMedium = event.toJSON().amount_medium
+      const amountHard = event.toJSON().amount_hard
+      const amountSpecial = event.toJSON().amount_special
 
       const easyQuestions = await Question.query()
         .where({ difficulty: 1, deleted: false })

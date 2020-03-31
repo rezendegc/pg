@@ -66,6 +66,59 @@
         </div>
 
         <br />
+        <p>Quantidade de questões</p>
+        <div class="row">
+          <div class="col-12 col-sm-1">
+            Fáceis
+            <input
+              required
+              name="amount_easy"
+              class="date_box form-control"
+              type="number"
+              min="1"
+              max="59"
+              value="{{ old('end_date', '5') }}"
+            />
+          </div>
+          <div class="col-12 col-sm-1">
+            Médias
+            <input
+              required
+              name="amount_medium"
+              class="date_box form-control"
+              type="number"
+              min="1"
+              max="59"
+              value="{{ old('end_date', '5') }}"
+            />
+          </div>
+          <div class="col-12 col-sm-1">
+            Difíceis
+            <input
+              required
+              name="amount_hard"
+              class="date_box form-control"
+              type="number"
+              min="1"
+              max="59"
+              value="{{ old('end_date', '4') }}"
+            />
+          </div>
+          <div class="col-12 col-sm-1">
+            Espéciais
+            <input
+              required
+              name="amount_special"
+              class="date_box form-control"
+              type="number"
+              min="1"
+              max="59"
+              value="{{ old('end_date', '1') }}"
+            />
+          </div>
+        </div>
+
+        <br />
         <div class="row">
           <div class="col-12 col-sm-4">
             <p>Regras da Prova</p>
