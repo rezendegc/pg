@@ -57,7 +57,7 @@ class InitialMigrationSchema extends Schema {
     });
     await this.create("exams", table => {
       table.increments();
-      table.integer("grade");
+      table.string("grade");
       table
         .integer("exam_schedule_id")
         .unsigned()

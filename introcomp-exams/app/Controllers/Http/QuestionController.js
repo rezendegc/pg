@@ -2,7 +2,11 @@
 
 /** @type {typeof import('../../Models/Question')} */
 const Question = use('App/Models/Question')
+/** @type {typeof import('../../Models/Event')} */
+const Event = use('App/Models/Event');
 const Helpers = use('Helpers')
+const Drive = use('Drive')
+const moment = require('moment');
 
 class QuestionController {
   async store({ request, response, session }) {
@@ -108,6 +112,45 @@ class QuestionController {
     session.flash({ notification: 'Questão atualizada com sucesso' })
   
     return response.route('admin.menu')
+  }
+
+  async exportMetrics({ response, request }) {
+    const { eventId: id } = request.all();
+
+    const questionsFetch = await Question.query().with('exams', builder => {
+      builder.with('event');
+    }).fetch();
+    const questions = questionsFetch.toJSON();
+    
+    const fileName = 'Métricas ' + moment().format('YYYY-MM-DD HH:mm:ss') + '.csv';
+    const headers = 'Resumo,Dificuldade,Total de usos,Acertos,Erros,Nulas,%Acertos,%Erros,%Nulas\n';
+    const body = questions.map(e => {
+      const length = e.exams.filter(el=> id =='all' || el.event.id == id).length;
+      if (!length) return `${e.summary},${e.difficulty},0,0,0,0,0,0,0\n`;
+      let rights = 0;
+      let wrongs = 0;
+      let nulls = 0;
+
+      e.exams.forEach(exam => {
+        if (id != 'all' && exam.event.id != id) return;
+        if (exam.pivot.answer == e.correct_answer) rights++;
+        else if (!exam.pivot.answer) nulls++;
+        else wrongs++;
+      });
+
+      return `${e.summary},${e.difficulty},${length},${rights},${wrongs},${nulls},${rights/length*100}%,${wrongs/length*100}%,${nulls/length*100}%\n`;
+    });
+    
+    await Drive.put(fileName, Buffer.from(headers+body.join('')))
+    return response.attachment(
+      Helpers.tmpPath(fileName)
+    )
+  }
+
+  async metrics({ view }) {
+    const events = await Event.query().fetch()
+
+    return view.render('admin/metrics', { events: events.toJSON() })
   }
 }
 

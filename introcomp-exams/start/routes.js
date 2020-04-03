@@ -26,6 +26,8 @@ Route.group(() => {
     Route.delete('questions', 'QuestionController.delete').as('question.delete')
     Route.get('questions/:id', 'QuestionController.showEdit').as('question.edit')
     Route.put('questions/:id', 'QuestionController.edit').as('question.put')
+    Route.post('/questionsDownload', 'QuestionController.exportMetrics').as('metrics.download')
+    Route.get('/questionsDownload', 'QuestionController.metrics').as('questions.metrics')
     
     // Users endpoints
     Route.get('teacher', 'UserController.showTeacher').as('admin.create_teacher')
@@ -50,6 +52,9 @@ Route.group(() => {
     // See ended exam
     Route.get('exams', 'ExamController.list').as('admin.exams')
     Route.get('exam/:id', 'ExamController.viewEnded').as('admin.exam')
+    
+    Route.get('grades', 'ExamController.grades').as('admin.grades')
+    Route.post('grades', 'ExamController.exportGrades').as('grades.download')
 }).prefix('admin').middleware(['isAdmin'])
 
 Route.group(() => {

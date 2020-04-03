@@ -1,0 +1,53 @@
+<html>
+  <head>
+    <title>Exportar métricas</title>
+    {{ style('styles/admin/bootstrap.min') }}
+    {{ script('scripts/jquery.min') }}
+    {{ style('styles/admin/agenda') }}
+  </head>
+  <body>
+    
+    @component('components.header')
+    @endcomponent
+
+    <div class="container">
+      <form
+        method="POST"
+        action="{{ route('metrics.download') }}"
+      >
+
+      {{ csrfField() }}
+
+        <br />
+        <div class="row">
+          <div class="form-group col-12 col-sm-4">
+            <p>De qual evento?</p>
+            <select class="form-control" name="eventId" required>
+              <option selected value="all" >Todos</option>
+              @each(event in events)
+                <option value="{{ event.id }}" {{ old('eventId', '') === event.id ? 'selected' : '' }}>{{ event.name }}</option>
+              @endeach
+            </select>
+          </div>
+        </div>
+        <br />
+
+        <br />
+
+        <p>
+          <button class="btn btn-outline-success" id="Enviar" type="submit">
+            Baixar
+          </button>
+        </p>
+      </form>
+    </div>
+  </body>
+</html>
+
+@if(flashMessage('error'))
+
+  <script>
+    alert("{{ flashMessage('error') }}")
+  </script>
+
+@endif
