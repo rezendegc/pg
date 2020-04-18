@@ -18,7 +18,7 @@
 */
 
 const { Ignitor } = require('@adonisjs/ignitor')
-const moment = require('moment');
+const moment = require('moment-timezone');
 
 moment.tz.setDefault('America/Sao_Paulo');
 
