@@ -209,7 +209,7 @@ function saveAnswer(id) {
       answersBefore.push(questions[question].answer_4)
       answersBefore.push(questions[question].answer_5)
 
-      const selectedValue = questions[actualQuestion].is_image
+      const selectedValue = questions[question].is_image
                         ? document.getElementById("answer" + selectedAnswer.value).innerHTML.match(/[0-9]+[.][^"]+/)[0]
                         : document.getElementById("answer" + selectedAnswer.value).innerHTML
       answersBefore.forEach((value, index) => {
