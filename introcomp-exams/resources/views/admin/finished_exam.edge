@@ -28,8 +28,8 @@
     <div class="exam-body">
       <p class="title" id="title">questão {{$loop.index+1}}</p>
       <br>
-      <p class="description" id="description">{{ el(question.wording) }}</p>
-
+      <span class="description" id="description">{{{question.wording}}}</span>
+      <br>
       <label class="container">
         <span id="answer1_{{$loop.index}}"></span>
         <input type="radio" name="radio_{{$loop.index}}" value="1_{{$loop.index}}" disabled>
