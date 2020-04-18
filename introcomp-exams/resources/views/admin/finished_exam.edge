@@ -118,14 +118,13 @@
       let markedAnswer = questions[actualQuestion].pivot.answer
 
       if (markedAnswer == 1) markedAnswer = questions[actualQuestion].answer_1
-      if (markedAnswer == 2) markedAnswer = questions[actualQuestion].answer_2
-      if (markedAnswer == 3) markedAnswer = questions[actualQuestion].answer_3
-      if (markedAnswer == 4) markedAnswer = questions[actualQuestion].answer_4
-      if (markedAnswer == 5) markedAnswer = questions[actualQuestion].answer_5
+      else if (markedAnswer == 2) markedAnswer = questions[actualQuestion].answer_2
+      else if (markedAnswer == 3) markedAnswer = questions[actualQuestion].answer_3
+      else if (markedAnswer == 4) markedAnswer = questions[actualQuestion].answer_4
+      else if (markedAnswer == 5) markedAnswer = questions[actualQuestion].answer_5
 
       if (answer1.innerText == markedAnswer) {
         let input = document.querySelector('input[name="radio_'+ actualQuestion +'"][value="1_'+ actualQuestion +'"]')
-        console.log(input)
         input.checked = true
       } else if (answer2.innerText == markedAnswer) {
         let input = document.querySelector('input[name="radio_'+ actualQuestion +'"][value="2_'+ actualQuestion +'"]')
