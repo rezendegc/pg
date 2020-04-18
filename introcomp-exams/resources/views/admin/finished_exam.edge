@@ -28,7 +28,7 @@
     <div class="exam-body">
       <p class="title" id="title">questão {{$loop.index+1}}</p>
       <br>
-      <p class="description" id="description">{{question.wording}}</p>
+      <p class="description" id="description">{{ el(question.wording) }}</p>
 
       <label class="container">
         <span id="answer1_{{$loop.index}}"></span>
