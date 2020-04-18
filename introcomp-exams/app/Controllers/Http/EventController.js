@@ -28,11 +28,6 @@ class EventController {
       session.flashAll()
 
       return response.redirect('back')
-    } else if (start_date.isBefore(moment())) {
-      session.flash({ error: 'O evento deve ocorrer no futuro' })
-      session.flashAll()
-
-      return response.redirect('back')
     }
 
     const event = new Event();

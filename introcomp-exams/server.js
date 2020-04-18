@@ -18,6 +18,9 @@
 */
 
 const { Ignitor } = require('@adonisjs/ignitor')
+const moment = require('moment');
+
+moment.tz.setDefault('America/Sao_Paulo');
 
 new Ignitor(require('@adonisjs/fold'))
   .appRoot(__dirname)
