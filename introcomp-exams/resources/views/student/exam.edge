@@ -192,6 +192,7 @@ function saveAnswer(id) {
 
   function updateQuestion(question) {
     let selectedAnswer = document.querySelector('input[name="radio"]:checked')
+    let input1, input2, input3, input4, input5;
     
     let circle = document.getElementById('circle' + question)
     if (selectedAnswer) {
@@ -238,17 +239,27 @@ function saveAnswer(id) {
     title.innerHTML = "questão " + (actualQuestion + 1)
     description.innerHTML = questions[actualQuestion].wording
     if (!isImage) {
-      answer1.innerHTML = answers.splice(number1, 1)[0]
-      answer2.innerHTML = answers.splice(number2, 1)[0]
-      answer3.innerHTML = answers.splice(number3, 1)[0]
-      answer4.innerHTML = answers.splice(number4, 1)[0]
-      answer5.innerHTML = answers[0]
+      input1 = answers.splice(number1, 1)[0];
+      input2 = answers.splice(number2, 1)[0];
+      input3 = answers.splice(number3, 1)[0];
+      input4 = answers.splice(number4, 1)[0];
+      input5 = answers[0];
+      answer1.innerHTML = input1;
+      answer2.innerHTML = input2;
+      answer3.innerHTML = input3;
+      answer4.innerHTML = input4;
+      answer5.innerHTML = input5;
     } else {
-      answer1.innerHTML = '<img style="width: 150px; height: 150px" src="uploads/' + answers.splice(number1, 1)[0] + '" >'
-      answer2.innerHTML = '<img style="width: 150px; height: 150px" src="uploads/' + answers.splice(number2, 1)[0] + '" >'
-      answer3.innerHTML = '<img style="width: 150px; height: 150px" src="uploads/' + answers.splice(number3, 1)[0] + '" >'
-      answer4.innerHTML = '<img style="width: 150px; height: 150px" src="uploads/' + answers.splice(number4, 1)[0] + '" >'
-      answer5.innerHTML = '<img style="width: 150px; height: 150px" src="uploads/' + answers[0] + '" >'
+      input1 = answers.splice(number1, 1)[0];
+      input2 = answers.splice(number2, 1)[0];
+      input3 = answers.splice(number3, 1)[0];
+      input4 = answers.splice(number4, 1)[0];
+      input5 = answers[0];
+      answer1.innerHTML = '<img style="width: 150px; height: 150px" src="uploads/' + input1 + '" >'
+      answer2.innerHTML = '<img style="width: 150px; height: 150px" src="uploads/' + input2 + '" >'
+      answer3.innerHTML = '<img style="width: 150px; height: 150px" src="uploads/' + input3 + '" >'
+      answer4.innerHTML = '<img style="width: 150px; height: 150px" src="uploads/' + input4 + '" >'
+      answer5.innerHTML = '<img style="width: 150px; height: 150px" src="uploads/' + input5 + '" >'
     }
 
     
@@ -260,23 +271,23 @@ function saveAnswer(id) {
       else if (markedAnswer == 4) markedAnswer = questions[actualQuestion].answer_4
       else if (markedAnswer == 5) markedAnswer = questions[actualQuestion].answer_5
 
-      if (answer1.innerText == markedAnswer) {
+      if (input1 == markedAnswer) {
         let input = document.querySelector('input[name="radio"][value="1"]')
         input.checked = true
         boolRadio = input
-      } else if (answer2.innerText == markedAnswer) {
+      } else if (input2 == markedAnswer) {
         let input = document.querySelector('input[name="radio"][value="2"]')
         input.checked = true
         boolRadio = input
-      } else if (answer3.innerText == markedAnswer) {
+      } else if (input3 == markedAnswer) {
         let input = document.querySelector('input[name="radio"][value="3"]')
         input.checked = true
         boolRadio = input
-      } else if (answer4.innerText == markedAnswer) {
+      } else if (input4 == markedAnswer) {
         let input = document.querySelector('input[name="radio"][value="4"]')
         input.checked = true
         boolRadio = input
-      } else if (answer5.innerText == markedAnswer) {
+      } else if (input5 == markedAnswer) {
         let input = document.querySelector('input[name="radio"][value="5"]')
         input.checked = true
         boolRadio = input
