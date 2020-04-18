@@ -85,7 +85,10 @@
 function saveAnswer(id) {
   let answer = "" 
   if (boolRadio) {
-    const answerText = document.getElementById("answer" + boolRadio.value).innerText
+    const answerText = questions[actualQuestion].is_image
+                        ? document.getElementById("answer" + boolRadio.value).innerHTML.match(/\d+[.][^"]+/)[0]
+                        : document.getElementById("answer" + boolRadio.value).innerText;
+
     if (questions[actualQuestion].answer_1 === answerText) answer = "1"
     else if (questions[actualQuestion].answer_2 === answerText) answer = "2"
     else if (questions[actualQuestion].answer_3 === answerText) answer = "3"
