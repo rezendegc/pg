@@ -86,7 +86,7 @@ function saveAnswer(id) {
   let answer = "" 
   if (boolRadio) {
     const answerText = questions[actualQuestion].is_image
-                        ? document.getElementById("answer" + boolRadio.value).innerHTML.match(/\d+[.][^"]+/)[0]
+                        ? document.getElementById("answer" + boolRadio.value).innerHTML.match(/[0-9]+[.][^"]+/)[0]
                         : document.getElementById("answer" + boolRadio.value).innerText;
 
     if (questions[actualQuestion].answer_1 === answerText) answer = "1"
