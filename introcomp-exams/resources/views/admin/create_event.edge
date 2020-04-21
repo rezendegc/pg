@@ -13,6 +13,7 @@
     <div class="container">
       <form
         method="POST"
+        enctype="multipart/form-data"
         action="{{ route('event.create') }}"
       >
 
@@ -115,6 +116,18 @@
               max="59"
               value="{{ old('amount_special', '1') }}"
             />
+          </div>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-12 col-sm-4">
+            <p>Arquivo CSV com alunos</p>
+            O arquivo deve possuir, ao menos, as seguintes colunas (em qualquer ordem, mas com o exato nome):<br>
+            <b>Nome, Escola, Turno_Introcomp, Cpf, Email</b>
+            <label for='in2' class="btn btn-primary">
+              <input id="in2" type="file" name="students" accept=".csv" required>
+            </label><span id="file2"></span>
           </div>
         </div>
 

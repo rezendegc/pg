@@ -2,9 +2,41 @@
 
 /** @type {typeof import('../../Models/Event')} */
 const Event = use('App/Models/Event')
+/** @type {typeof import('../../Models/User')} */
+const User = use('App/Models/User')
 const moment = require('moment')
 const { formatDate } = require('../../../utils/date')
 const dateFormat = 'DD-MM-YYYY HH:mm'
+const Helpers = use('Helpers')
+const fs = require('fs')
+
+const _parseCSV = (csvString) => {
+  const rows = csvString.split('\n')
+  const headers = rows.shift().split(',');
+
+  return rows.map(row => {
+    const fields = [];
+    let word = '';
+    let isOnString = false;
+    row.split('').forEach(letter => {
+      if (letter === ',') {
+        if (!isOnString) {
+          fields.push(word);
+          word = '';
+        }
+      } else if (letter === '"') {
+        isOnString = !isOnString;
+      } else {
+        word += letter;
+      }
+    });
+    fields.push(word);
+    let object = {};
+    fields.forEach((field, i) => object[headers[i]] = field);
+
+    return object;
+  });
+};
 
 class EventController {
   async store({ request, response, session }) {
@@ -41,9 +73,28 @@ class EventController {
     event.amount_special = amount_special;
     
     try {
-      await event.save()
+      await event.save();
+      
+      const studentsFile = request.file('students', {})
+      const fileName = String(Date.now());
+      
+      await studentsFile.move(Helpers.tmpPath('uploads'), {
+        name: fileName,
+        overwrite: true
+      })
+      
+      const students = _parseCSV(fs.readFileSync(Helpers.tmpPath('uploads') + '/' + fileName, 'utf8'));
+      const bulkInsert = students.map(student => ({
+        event_id: event.id,
+        name: student.Nome,
+        school: student.Escola,
+        shift: student.Turno_Introcomp == 'Matutino' ? 'MORNING' : student.Turno_Introcomp == 'Vespertino' ? 'VESPERTINE' : 'BOTH',
+        cpf: student.Cpf,
+        email: student.Email
+      }))
+      await User.createMany(bulkInsert)
+
       session.flash({ notification: 'Evento criado com sucesso' })
-  
       return response.route('admin.menu')
     } catch (e) {
       console.log(e)

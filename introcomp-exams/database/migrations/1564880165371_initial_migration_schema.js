@@ -43,10 +43,7 @@ class InitialMigrationSchema extends Schema {
           enumName: "UserRoles"
         })
         .defaultTo("STUDENT");
-      table
-        .enu("shift", ["MORNING", "VESPERTINE", "BOTH"], {
-          enumName: "StudentShifts"
-        })
+      table.string("shift")
       table
         .integer("event_id")
         .unsigned()

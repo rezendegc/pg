@@ -20,8 +20,6 @@ class QuestionController {
         size: '1mb'
       })
 
-      console.log(optionImages)
-
       let count = 0
       await optionImages.moveAll(Helpers.publicPath('uploads'), file => {
         count++
