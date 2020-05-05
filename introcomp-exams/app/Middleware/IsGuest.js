@@ -17,8 +17,6 @@ class IsAdmin {
         if (auth.user.role === 'ADMIN') {
           return response.route('admin.menu')
         } else if (auth.user.role === 'STUDENT') {
-          console.log('lul');
-          
           return response.route('exam.show')
         }
       }
