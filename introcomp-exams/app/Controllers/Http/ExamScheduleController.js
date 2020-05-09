@@ -111,7 +111,7 @@ class ExamScheduleController {
 
   async list({ view, auth }) {
     const schedulesFetch = await ExamSchedule.query()
-      .where('start_datetime', '>', formatDate(moment()))
+      .where('end_datetime', '>', formatDate(moment()))
       .with('event')
       .fetch()
     const schedules = schedulesFetch.toJSON().map(e => {

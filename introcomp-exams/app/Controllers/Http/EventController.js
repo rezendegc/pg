@@ -50,7 +50,7 @@ class EventController {
       session.flashAll()
 
       return response.redirect('back')
-    } else if (!start_date.isValid()) {
+    } else if (!end_date.isValid()) {
       session.flash({ error: 'Data de fim inválida' })
       session.flashAll()
 
@@ -104,7 +104,7 @@ class EventController {
   }
 
   async list({ view }) {
-    const events = await Event.query().where('start_date', '>', formatDate(moment())).fetch();
+    const events = await Event.query().where('end_date', '>', formatDate(moment())).fetch();
 
     return view.render('admin/list_events', { events: events && events.toJSON() })
   }

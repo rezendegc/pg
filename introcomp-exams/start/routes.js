@@ -26,8 +26,8 @@ Route.group(() => {
     Route.delete('questions', 'QuestionController.delete').as('question.delete')
     Route.get('questions/:id', 'QuestionController.showEdit').as('question.edit')
     Route.put('questions/:id', 'QuestionController.edit').as('question.put')
-    Route.post('/questionsDownload', 'QuestionController.exportMetrics').as('metrics.download')
-    Route.get('/questionsDownload', 'QuestionController.metrics').as('questions.metrics')
+    Route.post('questionsDownload', 'QuestionController.exportMetrics').as('metrics.download')
+    Route.get('questionsDownload', 'QuestionController.metrics').as('questions.metrics')
     
     // Users endpoints
     Route.get('teacher', 'UserController.showTeacher').as('admin.create_teacher')
@@ -67,11 +67,11 @@ Route.group(() => {
     Route.post('users', 'UserController.createStudent').as('teacher.student.create')
 }).prefix('teacher').middleware(['isTeacher'])
 
-Route.get('/admin', 'UserController.adminIndex').middleware('isGuest').as('admin.index')
-Route.post('/admin', 'UserController.adminLogin').middleware('isGuest').as('admin.login')
+Route.get('admin', 'UserController.adminIndex').middleware('isGuest').as('admin.index')
+Route.post('admin', 'UserController.adminLogin').middleware('isGuest').as('admin.login')
 
-Route.get('/teacher', 'UserController.teacherIndex').middleware('isGuest').as('teacher.index')
-Route.post('/teacher', 'UserController.teacherLogin').middleware('isGuest').as('teacher.login')
+Route.get('teacher', 'UserController.teacherIndex').middleware('isGuest').as('teacher.index')
+Route.post('teacher', 'UserController.teacherLogin').middleware('isGuest').as('teacher.login')
 
 Route.get('/', 'UserController.index').as('student.index').middleware('isGuest')
 Route.post('/login', 'UserController.login').middleware('isGuest').as('student.login')
@@ -80,5 +80,7 @@ Route.get('/logout', 'UserController.logout').middleware('auth').as('student.log
 Route.get('/exam', 'ExamController.show').middleware('isStudent').as('exam.show')
 Route.get('/waiting', 'ExamController.waitingStart').middleware('isStudent').as('exam.waiting')
 Route.get('/finished', 'ExamController.finished').middleware('isStudent').as('exam.finished')
+
+Route.get('/time', 'ExamController.getCurrentTime').as('exam.time')
 
 Route.post('/examquestion/:id', 'ExamQuestionController.update').as('examquestion.update')

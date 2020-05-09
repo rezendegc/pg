@@ -322,19 +322,20 @@ function saveAnswer(id) {
 <script>
   let toggle = true;
   let clock = document.getElementById("countdown") 
+  let millisecDiff = moment({{{ toJSON(currentTime) }}}).diff(moment());
   const end = moment({{{ toJSON(schedule.end_datetime) }}})
 
-  const time = moment.duration(end.diff(moment()))
-  if (time.milliseconds() < 0) {
+  let time = moment.duration(end.diff(moment().add(millisecDiff, 'milliseconds')))
+  if (time.asMilliseconds() <= 0) {
     window.location.replace({{{ toJSON(route('exam.finished')) }}})
   }
   clock.innerHTML = time.hours().toString().padStart(2, '0') + ":" + time.minutes().toString().padStart(2, '0')
   setInterval(() => {
-    if (time.milliseconds() < 0) {
+    if (time.asMilliseconds() <= 0) {
       window.location.replace({{{ toJSON(route('exam.finished')) }}})
     } else {
       if (toggle) {
-        const time = moment.duration(end.diff(moment()))
+        time = moment.duration(end.diff(moment().add(millisecDiff, 'milliseconds')))
         
         clock.innerHTML = time.hours().toString().padStart(2, '0') + ":" + time.minutes().toString().padStart(2, '0')
       }
@@ -349,10 +350,25 @@ function saveAnswer(id) {
     if (!toggle) {
       clock.innerHTML = "TEMPO"
     } else {
-      const time = moment.duration(end.diff(moment()))
+      time = moment.duration(end.diff(moment().add(millisecDiff, 'milliseconds')))
 
       clock.innerHTML = time.hours().toString().padStart(2, '0') + ":" + time.minutes().toString().padStart(2, '0')
     }
   }
+
+  function updateTime() {
+    let xhttp = new XMLHttpRequest();
+    xhttp.open("GET", "/time", true);
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        let requestTime = Date.now() - requestSent;
+        millisecDiff = moment(this.responseText).add(requestTime, 'milliseconds').diff(moment());
+      }
+    }
+    let requestSent = Date.now();
+    xhttp.send();
+  }
+
+  updateTime();
 </script>
 

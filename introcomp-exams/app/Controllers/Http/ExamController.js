@@ -47,7 +47,8 @@ class ExamController {
         schedule,
         questions: questions.toJSON(),
         seed: auth.user.id,
-        rules: event.rules
+        rules: event.rules,
+        currentTime: moment().format('YYYY-MM-DD HH:mm:ss')
       })
     } else {
       return response.route('student.logout')
@@ -66,7 +67,8 @@ class ExamController {
     } else {
       return view.render('student/waiting', {
         schedule: schedule.toJSON(),
-        rules: event.rules
+        rules: event.rules,
+        currentTime: moment().format('YYYY-MM-DD HH:mm:ss'),
       })
     }
   }
@@ -173,6 +175,10 @@ class ExamController {
     return response.attachment(
       Helpers.tmpPath(fileName)
     )
+  }
+
+  async getCurrentTime({ response }) {
+    return response.json(moment().format('YYYY-MM-DD HH:mm:ss'));
   }
 }
 

@@ -40,7 +40,7 @@
                   </label>
                 </td>
                 <td onclick="window.location='{{ role === 'ADMIN' ? route('schedule.showEdit', { id: schedule.id }) : route('teacher.schedule.showEdit', { id: schedule.id }) }}'" class="styledtd">
-                  {{ schedule.start_datetime }}
+                  {{ schedule.start_datetime.toString() }}
                 </td>
                 <td onclick="window.location='{{ role === 'ADMIN' ? route('schedule.showEdit', { id: schedule.id }) : route('teacher.schedule.showEdit', { id: schedule.id }) }}'" class="styledtd">
                   {{ schedule.register_time }} min

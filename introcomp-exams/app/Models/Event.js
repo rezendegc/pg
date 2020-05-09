@@ -2,6 +2,7 @@
 
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
 const Model = use("Model");
+const moment = require('moment');
 
 class Event extends Model {
   static get dates() {
@@ -10,7 +11,7 @@ class Event extends Model {
 
   static castDates (field, value) {
     if (field === 'start_date' || field === 'end_date') {
-      return value.format('DD/MM/YYYY')
+      return moment(value).format('DD/MM/YYYY')
     }
     return super.formatDates(field, value)
   }
