@@ -27,7 +27,7 @@ class UserController {
   }
 
   async login({ request, auth, session, response }) {
-    const { email } = request.all()
+    const { email, password } = request.all()
     await auth.logout()
 
     const user = await User.query()
@@ -74,13 +74,13 @@ class UserController {
     }
 
     try {
-      if (user) await auth.login(user)
-      else throw Error('No user found')
+      if (user) await auth.attempt(email, password)
+      else throw new Error('No user found')
     } catch (e) {
       console.debug(e)
 
       session.flashExcept(['email'])
-      session.flash({ error: 'E-mail não encontrado!' })
+      session.flash({ error: 'E-mail ou senha incorretos!' })
 
       return response.route('student.index')
     }
@@ -138,7 +138,7 @@ class UserController {
           [array[i], array[j]] = [array[j], array[i]];
         }
       }
-      
+
       shuffle(questionIds)
 
       await exam.questions().attach(questionIds)
@@ -220,7 +220,7 @@ class UserController {
   }
 
   async createStudent({ request, response, session, auth }) {
-    const { name, school, shift, cpf, email, eventId } = request.all()
+    const { name, school, shift, cpf, email, eventId, password } = request.all()
     const eventFetched = await Event.find(eventId);
     if (!eventFetched) {
       session.flash({ error: 'Evento não encontrado' })
@@ -228,11 +228,18 @@ class UserController {
 
       return response.redirect('back')
     }
+    const userFetched = await User.query().where({ email, event_id: eventId }).first();
+    if (userFetched) {
+      session.flash({ error: 'Aluno já existe neste evento' })
+      session.flashAll()
+
+      return response.redirect('back')
+    }
 
     try {
-      await User.create({ name, school, shift, cpf, email, event_id: eventId })
+      await User.create({ name, school, shift, cpf, email, event_id: eventId, password })
       session.flash({ notification: 'Aluno criado com sucesso' })
-  
+
       return auth.user.role === 'TEACHER' ? response.route('teacher.menu') : response.route('admin.menu')
     } catch (e) {
       session.flash({ error: 'Erro inesperado' })
@@ -262,7 +269,7 @@ class UserController {
     try {
       await User.create({ name, email, event_id: eventId, role: 'TEACHER', password })
       session.flash({ notification: 'Professor criado com sucesso' })
-  
+
       return response.route('admin.menu')
     } catch (e) {
       session.flash({ error: 'Erro inesperado' })

@@ -1,5 +1,5 @@
 @font-face {
-  font-family: Montserrat; 
+  font-family: Montserrat;
   src: url('/fonts/Montserrat.ttf');
 }
 
@@ -136,7 +136,7 @@ body {
   padding-right: 15px;
   padding-left: 15px;
   position: relative;
-  top: 92px;
+  top: 72px;
 }
 
 .input-container:focus {
@@ -166,5 +166,9 @@ body {
 .login-button-container {
   text-align:center;
   position: relative;
-  bottom: -180px;
+  bottom: -150px;
+}
+
+.mt {
+  margin-top: 20px;
 }

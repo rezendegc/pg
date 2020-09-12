@@ -71,23 +71,24 @@ class EventController {
     event.amount_medium = amount_medium;
     event.amount_hard = amount_hard;
     event.amount_special = amount_special;
-    
+
     try {
       await event.save();
-      
+
       const studentsFile = request.file('students', {})
       const fileName = String(Date.now());
-      
+
       await studentsFile.move(Helpers.tmpPath('uploads'), {
         name: fileName,
         overwrite: true
       })
-      
+
       const students = _parseCSV(fs.readFileSync(Helpers.tmpPath('uploads') + '/' + fileName, 'utf8'));
       const bulkInsert = students.map(student => ({
         event_id: event.id,
         name: student.Nome,
         school: student.Escola,
+        password: student.Senha,
         shift: student.Turno_Introcomp == 'Matutino' ? 'MORNING' : student.Turno_Introcomp == 'Vespertino' ? 'VESPERTINE' : 'BOTH',
         cpf: student.Cpf,
         email: student.Email
@@ -114,9 +115,9 @@ class EventController {
     if (!events) return response.route('admin.menu')
 
     await Event.query().whereIn('id', events).delete();
-    
+
     session.flash({ notification: 'Eventos apagados com sucesso' })
-  
+
     return response.route('admin.menu')
   }
 }

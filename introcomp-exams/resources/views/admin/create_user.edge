@@ -10,12 +10,12 @@
     <title>Sign Up</title>
     {{ style('styles/admin/login_2') }}
     {{ style('styles/admin/bootstrap.min') }}
-    
+
 </head>
 <body>
     <div class="wrapper">
         <h2>Registrar novo aluno</h2><br>
-        
+
         <form action="{{ role === 'TEACHER' ? route('teacher.student.create') : route('student.create') }}" method="post">
             {{ csrfField() }}
 
@@ -46,6 +46,11 @@
                 <span class="help-block"></span>
             </div>    <br>
             <div class="form-group">
+                <label>Senha:<sup>*</sup></label>
+                <input type="text" name="password" class="form-control" value="{{ old('password', '') }}" required>
+                <span class="help-block"></span>
+            </div>    <br>
+            <div class="form-group">
                 <label>Evento Correspondente:<sup>*</sup></label>
                 <select class="form-control" name="eventId" required>
                     <option disabled selected hidden value="">Selecione o evento correspondente</option>
@@ -58,8 +63,16 @@
             <div class="form-group">
                 <input type="submit" class="btn btn-primary" value="Registrar">
             </div>
-            
+
         </form>
-    </div>    
+    </div>
 </body>
 </html>
+
+@if(flashMessage('error'))
+
+  <script>
+    alert("{{ flashMessage('error') }}")
+  </script>
+
+@endif
