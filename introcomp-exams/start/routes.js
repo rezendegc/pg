@@ -28,13 +28,13 @@ Route.group(() => {
     Route.put('questions/:id', 'QuestionController.edit').as('question.put')
     Route.post('questionsDownload', 'QuestionController.exportMetrics').as('metrics.download')
     Route.get('questionsDownload', 'QuestionController.metrics').as('questions.metrics')
-    
+
     // Users endpoints
     Route.get('teacher', 'UserController.showTeacher').as('admin.create_teacher')
     Route.post('teacher', 'UserController.createTeacher').as('teacher.create')
     Route.get('users', 'UserController.show').as('admin.create_user')
     Route.post('users', 'UserController.createStudent').as('student.create')
-    
+
     // ExamSchedule Endpoints
     Route.get('schedules', 'ExamScheduleController.list').as('admin.list_schedule')
     Route.get('schedule', 'ExamScheduleController.showCreate').as('admin.create_schedule')
@@ -42,17 +42,17 @@ Route.group(() => {
     Route.delete('schedules', 'ExamScheduleController.delete').as('schedule.delete')
     Route.get('schedules/:id', 'ExamScheduleController.showEdit').as('schedule.showEdit')
     Route.put('schedules/:id', 'ExamScheduleController.edit').as('schedule.edit')
-    
+
     // Events Endpoints
     Route.on('event').render('admin/create_event').as('admin.create_event')
     Route.get('events', 'EventController.list').as('admin.list_events')
     Route.post('events', 'EventController.store').as('event.create')
     Route.delete('events', 'EventController.delete').as('event.delete')
-    
+
     // See ended exam
     Route.get('exams', 'ExamController.list').as('admin.exams')
     Route.get('exam/:id', 'ExamController.viewEnded').as('admin.exam')
-    
+
     Route.get('grades', 'ExamController.grades').as('admin.grades')
     Route.post('grades', 'ExamController.exportGrades').as('grades.download')
 }).prefix('admin').middleware(['isAdmin'])
@@ -69,6 +69,7 @@ Route.group(() => {
 
 Route.get('admin', 'UserController.adminIndex').middleware('isGuest').as('admin.index')
 Route.post('admin', 'UserController.adminLogin').middleware('isGuest').as('admin.login')
+Route.post('/api/admin', 'UserController.adminApiLogin').middleware('isGuest').as('admin.login')
 
 Route.get('teacher', 'UserController.teacherIndex').middleware('isGuest').as('teacher.index')
 Route.post('teacher', 'UserController.teacherLogin').middleware('isGuest').as('teacher.login')

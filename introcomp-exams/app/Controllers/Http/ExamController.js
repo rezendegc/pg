@@ -89,7 +89,7 @@ class ExamController {
           grade += wrongValue
         }
       });
-      
+
 
       exam.grade = grade;
       exam.status = 'FINISHED';
@@ -165,12 +165,12 @@ class ExamController {
 
       filteredUsers.forEach(e => {if (e.id === user.id) e.exam = examFetched.toJSON()});
     };
-    
-    
+
+
     const fileName = 'Notas ' + moment().format('YYYY-MM-DD HH:mm:ss') + '.csv';
     const headers = 'Nome,CPF,Turno,Escola,Nota\n';
     const body = filteredUsers.map(e => `${e.name},${e.cpf},${e.shift},${e.school},${e.exam.grade}`);
-    
+
     await Drive.put(fileName, Buffer.from(headers+body.join('\n')))
     return response.attachment(
       Helpers.tmpPath(fileName)

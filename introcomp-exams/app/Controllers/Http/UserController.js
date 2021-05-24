@@ -28,6 +28,7 @@ class UserController {
 
   async login({ request, auth, session, response }) {
     const { email, password } = request.all()
+
     await auth.logout()
 
     const user = await User.query()
@@ -74,7 +75,7 @@ class UserController {
     }
 
     try {
-      if (user) await auth.attempt(email, password)
+      if (user) await auth.login(user)
       else throw new Error('No user found')
     } catch (e) {
       console.debug(e)
@@ -144,11 +145,13 @@ class UserController {
       await exam.questions().attach(questionIds)
     }
 
-    return response.route('exam.waiting')
+    return response.status(301).route('exam.waiting')
   }
 
   async adminLogin({ request, auth, session, response }) {
     const { email, password } = request.all()
+
+    if (!email || !password) return response.status(401).send({ message: 'missing arguments' })
     await auth.logout()
 
     try {
@@ -166,10 +169,37 @@ class UserController {
       session.flashExcept(['invalidLogin'])
       session.flash({ error: 'E-mail ou senha inválidos!' })
 
-      return response.route('admin.index')
+      return response.status(401).send({ message: 'unauthorized!' })
     }
 
     return response.route('admin.menu')
+  }
+
+  async adminApiLogin({ request, auth, session, response }) {
+    console.log('test')
+    const { email, password } = request.all()
+
+    await auth.logout()
+
+    try {
+      await auth.attempt(email, password)
+      if (auth.user.role !== "ADMIN") {
+        await auth.logout();
+
+        session.flash({ error: 'O usuário deve ser um admin!' })
+
+        return response.route('admin.index')
+      }
+    } catch (e) {
+      console.debug(e)
+
+      session.flashExcept(['invalidLogin'])
+      session.flash({ error: 'E-mail ou senha inválidos!' })
+
+      return response.status(401)
+    }
+
+    return response.status(200)
   }
 
   async teacherLogin({ request, auth, session, response }) {
